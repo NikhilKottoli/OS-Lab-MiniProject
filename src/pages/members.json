@@ -1,0 +1,9 @@
+[
+    {
+      "id": 1,
+      "designer": "Nikhil Kottoli",
+      "title": "File and Process System Calls",
+      "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
+      "designerRolllNumber": "231CS236"
+    }
+  ]
