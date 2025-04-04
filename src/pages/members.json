@@ -5,5 +5,12 @@
       "title": "File and Process System Calls",
       "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
       "designerRolllNumber": "231CS236"
+    },
+    {
+      "id":2,
+      "designer":"Hemaakshi",
+      "title":"Deadlock avoidance and detection",
+      "description":"Implementation of deadlock avoidance and detection algorithms in a multi-threaded environment.",
+      "designerRolllNumber":"231CS237"
     }
   ]
