@@ -8,37 +8,32 @@ const ProcessSystemCalls = () => {
   const [activeCall, setActiveCall] = useState(null);
   const [selectedProcess, setSelectedProcess] = useState(1);
   const [nextId, setNextId] = useState(2);
-  const [animation, setAnimation] = useState('');
   const [log, setLog] = useState(['System started. Parent process is running.']);
   
   const systemCalls = [
     { 
       name: 'execl()', 
       id: 'execl', 
-      description: 'Replaces current process image with a new one', 
-      icon: <Play size={20} />, 
-      color: 'bg-green-500' 
+      description: 'Replaces current process with a new one', 
+      icon: <Play size={18} />
     },
     { 
       name: 'fork()', 
       id: 'fork', 
-      description: 'Creates a new process (child) by duplicating the parent process', 
-      icon: <GitFork size={20} />, 
-      color: 'bg-blue-500' 
+      description: 'Creates a child process by duplicating the parent', 
+      icon: <GitFork size={18} />
     },
     { 
       name: 'wait()', 
       id: 'wait', 
-      description: 'Parent process waits for child process to terminate', 
-      icon: <Clock size={20} />, 
-      color: 'bg-purple-500' 
+      description: 'Parent waits for child to terminate', 
+      icon: <Clock size={18} />
     },
     { 
       name: 'exit()', 
       id: 'exit', 
       description: 'Terminates the current process', 
-      icon: <LogOut size={20} />, 
-      color: 'bg-red-500' 
+      icon: <LogOut size={18} />
     }
   ];
   
@@ -49,24 +44,13 @@ const ProcessSystemCalls = () => {
     'ps aux'
   ];
   
-  useEffect(() => {
-    if (animation) {
-      const timer = setTimeout(() => {
-        setAnimation('');
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [animation]);
-  
   const addLogEntry = (entry) => {
     setLog(prevLog => [...prevLog, entry]);
   };
   
   const handleCallClick = (callId) => {
     setActiveCall(callId);
-    setAnimation(`animate-pulse`);
     
-    // Handle different system calls
     switch(callId) {
       case 'execl':
         handleExecl();
@@ -83,6 +67,10 @@ const ProcessSystemCalls = () => {
       default:
         break;
     }
+    
+    setTimeout(() => {
+      setActiveCall(null);
+    }, 500);
   };
   
   const handleExecl = () => {
@@ -186,13 +174,13 @@ const ProcessSystemCalls = () => {
   const getProcessStatusColor = (status) => {
     switch(status) {
       case 'running':
-        return 'bg-green-100 border-green-500';
+        return 'bg-green-100';
       case 'waiting':
-        return 'bg-yellow-100 border-yellow-500';
+        return 'bg-yellow-100';
       case 'terminated':
-        return 'bg-red-100 border-red-500';
+        return 'bg-red-100';
       default:
-        return 'bg-gray-100 border-gray-500';
+        return 'bg-gray-100';
     }
   };
   
@@ -210,67 +198,74 @@ const ProcessSystemCalls = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Process-Related System Calls</h1>
+    <div className="p-4 max-w-6xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6 text-center">Process System Calls</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {systemCalls.map((call) => {
           const currentProcess = processes.find(p => p.id === selectedProcess);
           const isAllowed = isCallAllowed(call.id, currentProcess);
+          
+          let buttonColor;
+          switch(call.id) {
+            case 'execl': buttonColor = 'bg-green-500'; break;
+            case 'fork': buttonColor = 'bg-blue-500'; break;
+            case 'wait': buttonColor = 'bg-purple-500'; break;
+            case 'exit': buttonColor = 'bg-red-500'; break;
+            default: buttonColor = 'bg-gray-500';
+          }
           
           return (
             <button
               key={call.id}
               onClick={() => handleCallClick(call.id)}
-              className={`${call.color} text-white p-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 
-                ${activeCall === call.id ? 'ring-4 ring-opacity-50 ring-white' : ''} 
-                ${!isAllowed ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`${buttonColor} text-white p-3 rounded ${activeCall === call.id ? 'ring-2' : ''} ${!isAllowed ? 'opacity-50' : ''}`}
               disabled={!isAllowed}
             >
               <div className="flex flex-col items-center">
-                <div className="text-2xl mb-2">{call.icon}</div>
-                <div className="font-bold">{call.name}</div>
-                <div className="text-xs mt-2 text-center">{call.description}</div>
+                <div className="mb-1">{call.icon}</div>
+                <div className="font-bold text-sm">{call.name}</div>
+                <div className="text-xs mt-1 text-center">{call.description}</div>
               </div>
             </button>
           );
         })}
       </div>
       
-      <div className="w-full flex flex-col md:flex-row gap-6">
-        {/* Process Tree Visualization */}
-        <div className="w-full md:w-1/2 p-4 border rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Process Tree</h2>
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Process Tree */}
+        <div className="w-full md:w-1/2 border p-3 rounded">
+          <h2 className="text-lg font-bold mb-3">Process Tree</h2>
           
-          <div className="overflow-auto max-h-96">
+          <div className="overflow-auto max-h-80">
             {processes.map((process) => (
               <div 
                 key={process.id} 
-                className={`p-3 my-2 border-2 rounded-lg cursor-pointer transition-all duration-300 ${
+                className={`p-2 my-1 border rounded cursor-pointer ${
                   getProcessStatusColor(process.status)
                 } ${
-                  selectedProcess === process.id ? 'ring-4 ring-blue-400' : ''
-                } ${animation && selectedProcess === process.id ? animation : ''}`}
+                  selectedProcess === process.id ? 'border-2 border-blue-500' : ''
+                }`}
                 onClick={() => process.status !== 'terminated' && setSelectedProcess(process.id)}
-                style={{ marginLeft: process.parent ? '2rem' : '0' }}
+                style={{ marginLeft: process.parent ? '1.5rem' : '0' }}
               >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between">
                   <div>
                     <span className="font-bold">PID: {process.id}</span> - {process.name}
                   </div>
-                  <div className="text-xs px-2 py-1 rounded bg-white">
-                    {process.status.toUpperCase()}
+                  <div className="text-xs px-1 py-0.5 bg-white rounded">
+                    {process.status}
                   </div>
                 </div>
                 
                 {process.command && (
-                  <div className="mt-2 text-sm bg-black text-green-400 p-2 rounded">
+                  <div className="mt-1 text-sm bg-black text-green-400 p-1 rounded">
                     $ {process.command}
                   </div>
                 )}
                 
                 {process.exitCode !== null && (
-                  <div className="mt-2 text-sm">
+                  <div className="mt-1 text-sm">
                     Exit Code: <span className={process.exitCode === 0 ? 'text-green-600' : 'text-red-600'}>
                       {process.exitCode}
                     </span>
@@ -278,7 +273,7 @@ const ProcessSystemCalls = () => {
                 )}
                 
                 {process.children.length > 0 && (
-                  <div className="mt-2 text-sm">
+                  <div className="mt-1 text-sm">
                     Children: {process.children.join(', ')}
                   </div>
                 )}
@@ -287,30 +282,17 @@ const ProcessSystemCalls = () => {
           </div>
         </div>
         
-        <div className="w-full md:w-1/2 p-4 border rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">System Log</h2>
+        {/* System Log */}
+        <div className="w-full md:w-1/2 border p-3 rounded">
+          <h2 className="text-lg font-bold mb-3">System Log</h2>
           
-          <div className="bg-black text-green-400 p-4 rounded-lg font-mono text-sm h-96 overflow-auto">
+          <div className="bg-black text-green-400 p-3 rounded font-mono text-sm h-80 overflow-auto">
             {log.map((entry, index) => (
-              <div key={index} className="mb-1 flex gap-2">
-                <span className="text-gray-500">[{index}]</span> <p className='text-white'>{entry}</p>
+              <div key={index} className="mb-1 text-white">
+                <span className="text-white">[{index}]</span> {entry}
               </div>
             ))}
           </div>
-        </div>
-      </div>
-      
-      <div className="mt-8 p-4 bg-gray-100 rounded-lg w-full">
-        <h2 className="text-xl font-bold mb-2">System Calls Explained:</h2>
-        <ul className="space-y-2">
-          <li><span className="font-bold text-green-500">execl()</span> - Replaces the current process image with a new program. In our visualization, this changes the command a process is running.</li>
-          <li><span className="font-bold text-blue-500">fork()</span> - Creates a child process by duplicating the calling process. The child is an exact copy of the parent initially.</li>
-          <li><span className="font-bold text-purple-500">wait()</span> - Suspends the calling process until one of its children terminates. The parent process will change to "waiting" status.</li>
-          <li><span className="font-bold text-red-500">exit()</span> - Terminates the calling process and returns an exit code to the parent process. If the parent was waiting, it will resume execution.</li>
-        </ul>
-        
-        <div className="mt-4 text-sm text-gray-600">
-          <p><strong>How to use:</strong> Click on a process in the tree to select it, then use the system call buttons to perform operations. The system log shows the history of actions.</p>
         </div>
       </div>
     </div>
