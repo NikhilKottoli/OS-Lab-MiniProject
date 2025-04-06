@@ -5,14 +5,14 @@ export const FileOrganizationTechniques = () => {
   const [tab, setTab] = React.useState('sequential');
 
   return (
-    <div>
-      <h2 className="text-3xl font-semibold mb-4 text-center">Explore File Organization Techniques</h2>
-      <div className="flex justify-center gap-4 mb-4">
-        <button onClick={() => setTab('sequential')} className={`px-4 py-2 rounded ${tab === 'sequential' ? 'bg-purple-500 text-white' : 'bg-white'}`}>Sequential</button>
-        <button onClick={() => setTab('indexed')} className={`px-4 py-2 rounded ${tab === 'indexed' ? 'bg-purple-500 text-white' : 'bg-white'}`}>Indexed</button>
-        <button onClick={() => setTab('hashed')} className={`px-4 py-2 rounded ${tab === 'hashed' ? 'bg-purple-500 text-white' : 'bg-white'}`}>Hashed</button>
+     <div className="space-y-8 mt-20 animate-fade-in">
+      <h2 className="text-5xl font-extrabold text-center text-purple-700">Explore File Organization Techniques</h2>
+      <div className="flex justify-center gap-6">
+        <button onClick={() => setTab('sequential')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'sequential' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Sequential</button>
+        <button onClick={() => setTab('indexed')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'indexed' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Indexed</button>
+        <button onClick={() => setTab('hashed')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'hashed' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Hashed</button>
       </div>
-      <div>
+      <div className="p-6 rounded-lg shadow-lg bg-white animate-fade-in">
         {tab === 'sequential' && <Sequential />}
         {tab === 'indexed' && <Indexed />}
         {tab === 'hashed' && <Hashed />}
