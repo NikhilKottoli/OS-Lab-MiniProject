@@ -12,6 +12,9 @@ import DeadlockHomepage from "./pages/DEADLOCK/deadlockhome";
 import ProcessSystemCalls from "./pages/ProcessSysCalls";
 import SystemCallsReference from "./pages/SysCallsGuide";
 import Navbar from "./pages/components/Navbar";
+import FileOrganizationHome from "./pages/FileOrganization/pages/Home";
+import FileOrganizationTechniques from "./pages/FileOrganization/pages/Techniques";
+
 
 const App = () => {
   return (
@@ -27,6 +30,8 @@ const App = () => {
         <Route path="/deadlockhome" element={<DeadlockHomepage />} />
         <Route path="/process" element={<ProcessSystemCalls />} />
         <Route path="/syscalls" element={<SystemCallsReference />} />
+        <Route path="/fileorganization" element={<FileOrganizationHome />} />
+        <Route path="/techniques" element={<FileOrganizationTechniques />} />
       </Routes>
     </Router>
   );
