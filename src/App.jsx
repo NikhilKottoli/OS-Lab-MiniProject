@@ -14,6 +14,8 @@ import SystemCallsReference from "./pages/SysCallsGuide";
 import Navbar from "./pages/components/Navbar";
 import FileOrganizationHome from "./pages/FileOrganization/pages/Home";
 import FileOrganizationTechniques from "./pages/FileOrganization/pages/Techniques";
+import FileAllocation from "./pages/FileAllocation/FileAllocation";
+import FileAllocationInfo from "./pages/FileAllocation/FileAllocationInfo";
 
 
 const App = () => {
@@ -32,6 +34,8 @@ const App = () => {
         <Route path="/syscalls" element={<SystemCallsReference />} />
         <Route path="/fileorganization" element={<FileOrganizationHome />} />
         <Route path="/techniques" element={<FileOrganizationTechniques />} />
+        <Route path="/fileallocation" element={<FileAllocation/>}/>
+        <Route path="/fileallocationinfo" element={<FileAllocationInfo/>}/>
       </Routes>
     </Router>
   );

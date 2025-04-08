@@ -12,5 +12,19 @@
       "title":"Deadlock avoidance and detection",
       "description":"Implementation of deadlock avoidance and detection algorithms in a multi-threaded environment.",
       "designerRolllNumber":"231CS237"
+    },
+    {
+      "id":9,
+      "designer":"Mithun",
+      "title":"File Allocation Methods",
+      "description":"Implementation of file allocation-Sequential,Indexed,Linked.",
+      "designerRolllNumber":"231CS234"
+    },
+    {
+      "id":10,
+      "designer":"Mohnish",
+      "title":"File Organization Techniques",
+      "description":"Implementation of file organization-Sequential,Indexed,Hashed.",
+      "designerRolllNumber":"231CS235"
     }
   ]
