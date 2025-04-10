@@ -14,6 +14,13 @@
       "designerRolllNumber":"231CS237"
     },
     {
+      "id":3,
+      "designer":"Manish",
+      "title":"Process Synchronization",
+      "description":"Implementation of process synchronization problems - Producer-Consumer, Readers-Writers, Dining Philosophers.",
+      "designerRolllNumber":"231CS237"
+    },
+    {
       "id":9,
       "designer":"Mithun",
       "title":"File Allocation Methods",

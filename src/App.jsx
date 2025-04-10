@@ -16,6 +16,7 @@ import FileOrganizationHome from "./pages/FileOrganization/pages/Home";
 import FileOrganizationTechniques from "./pages/FileOrganization/pages/Techniques";
 import FileAllocation from "./pages/FileAllocation/FileAllocation";
 import FileAllocationInfo from "./pages/FileAllocation/FileAllocationInfo";
+import ProcessSyncProblems from "./pages/ProcessSynchronization/ProcessSyncProblems";
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/techniques" element={<FileOrganizationTechniques />} />
         <Route path="/fileallocation" element={<FileAllocation/>}/>
         <Route path="/fileallocationinfo" element={<FileAllocationInfo/>}/>
+        <Route path="/processsync" element={<ProcessSyncProblems />} />
       </Routes>
     </Router>
   );
