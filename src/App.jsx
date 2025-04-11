@@ -17,6 +17,8 @@ import FileOrganizationTechniques from "./pages/FileOrganization/pages/Technique
 import FileAllocation from "./pages/FileAllocation/FileAllocation";
 import FileAllocationInfo from "./pages/FileAllocation/FileAllocationInfo";
 import ProcessSyncProblems from "./pages/ProcessSynchronization/ProcessSyncProblems";
+import CacheCoherencySimulator from "./pages/CacheCoherency/cache";
+import CacheHomePage from "./pages/CacheCoherency/cacheHome";
 
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
         <Route path="/fileallocation" element={<FileAllocation/>}/>
         <Route path="/fileallocationinfo" element={<FileAllocationInfo/>}/>
         <Route path="/processsync" element={<ProcessSyncProblems />} />
+        <Route path="/cache" element={<CacheCoherencySimulator />} />
+        <Route path="/cachehome" element={<CacheHomePage />} />
       </Routes>
     </Router>
   );

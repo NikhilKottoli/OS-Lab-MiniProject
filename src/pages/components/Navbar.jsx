@@ -10,11 +10,13 @@ const Navbar = () => {
           <Link to="/" className="hover:text-indigo-600">Home</Link>
           <Link to="/avoidance" className="hover:text-indigo-600">Avoidance</Link>
           <Link to="/detection" className="hover:text-indigo-600">Detection</Link>
+          <Link to="/memoryhome" className="hover:text-indigo-600">Memory Management</Link>
           <Link to="/process" className="hover:text-indigo-600">Process</Link>
           <Link to="/syscalls" className="hover:text-indigo-600">Syscalls</Link>
           <Link to="/fileorganization" className="hover:text-indigo-600">FileOrganization</Link>
           <Link to="/fileallocation" className='hover:text-indigo-600'>FileAllocation</Link>
           <Link to="/processsync" className='hover:text-indigo-600'>ProcessSync</Link>
+          <Link to="/cachehome" className='hover:text-indigo-600'>Cache Coherency</Link>
         </div>
       </div>
     </nav>

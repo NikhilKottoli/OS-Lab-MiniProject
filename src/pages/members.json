@@ -21,6 +21,13 @@
       "designerRolllNumber":"231CS237"
     },
     {
+      "id":5,
+      "designer":"Padmavati",
+      "title":"Memory Management",
+      "description":"Implementation of MFT and MVT algorithms.",
+      "designerRolllNumber":"231CS238"
+    },
+    {
       "id":9,
       "designer":"Mithun",
       "title":"File Allocation Methods",
@@ -33,5 +40,12 @@
       "title":"File Organization Techniques",
       "description":"Implementation of file organization-Sequential,Indexed,Hashed.",
       "designerRolllNumber":"231CS235"
+    },
+    {
+      "id":11,
+      "designer":"Padmavati",
+      "title":"Cache Coherency",
+      "description":"Implementation of cache coherency.",
+      "designerRolllNumber":"231CS238"
     }
   ]
