@@ -23,6 +23,8 @@ import CacheHomePage from "./pages/CacheCoherency/cacheHome";
 import IPCVisualization from "./pages/InterProcessCom/MessagePass";
 import SharedMemoryVisualization from "./pages/InterProcessCom/SharedMemory";
 import IPCHomePage from "./pages/InterProcessCom/IPCHome";
+import FileSysCall from "./pages/FileSysCall";
+import MemoryManagementVisualizer from "./pages/MemManage";
 
 const App = () => {
   return (
@@ -49,6 +51,8 @@ const App = () => {
         <Route path="/IPC" element={<IPCVisualization />} />
         <Route path="/SM" element={<SharedMemoryVisualization />} />
         <Route path="/IPCHome" element={<IPCHomePage />} />
+        <Route path="/filesyscall" element={<FileSysCall />} />
+        <Route path="/memmanage" element={<MemoryManagementVisualizer />} />
       </Routes>
     </Router>
   );
