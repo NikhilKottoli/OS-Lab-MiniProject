@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -7,16 +7,39 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-indigo-600">OS Lab Sim</h1>
         <div className="space-x-6 text-gray-700 font-medium">
-          <Link to="/" className="hover:text-indigo-600">Home</Link>
-          <Link to="/avoidance" className="hover:text-indigo-600">Avoidance</Link>
-          <Link to="/detection" className="hover:text-indigo-600">Detection</Link>
-          <Link to="/memoryhome" className="hover:text-indigo-600">Memory Management</Link>
-          <Link to="/process" className="hover:text-indigo-600">Process</Link>
-          <Link to="/syscalls" className="hover:text-indigo-600">Syscalls</Link>
-          <Link to="/fileorganization" className="hover:text-indigo-600">FileOrganization</Link>
-          <Link to="/fileallocation" className='hover:text-indigo-600'>FileAllocation</Link>
-          <Link to="/processsync" className='hover:text-indigo-600'>ProcessSync</Link>
-          <Link to="/cachehome" className='hover:text-indigo-600'>Cache Coherency</Link>
+          <Link to="/" className="hover:text-indigo-600">
+            Home
+          </Link>
+          <Link to="/avoidance" className="hover:text-indigo-600">
+            Avoidance
+          </Link>
+          <Link to="/detection" className="hover:text-indigo-600">
+            Detection
+          </Link>
+          <Link to="/memoryhome" className="hover:text-indigo-600">
+            Memory Management
+          </Link>
+          <Link to="/process" className="hover:text-indigo-600">
+            Process
+          </Link>
+          <Link to="/syscalls" className="hover:text-indigo-600">
+            Syscalls
+          </Link>
+          <Link to="/fileorganization" className="hover:text-indigo-600">
+            FileOrganization
+          </Link>
+          <Link to="/fileallocation" className="hover:text-indigo-600">
+            FileAllocation
+          </Link>
+          <Link to="/processsync" className="hover:text-indigo-600">
+            ProcessSync
+          </Link>
+          <Link to="/cachehome" className="hover:text-indigo-600">
+            Cache Coherency
+          </Link>
+          <Link to="/IPCHome" className="hover:text-indigo-600">
+            Interprocess Communication
+          </Link>
         </div>
       </div>
     </nav>

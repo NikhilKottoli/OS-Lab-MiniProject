@@ -20,7 +20,9 @@ import FileAllocationInfo from "./pages/FileAllocation/FileAllocationInfo";
 import ProcessSyncProblems from "./pages/ProcessSynchronization/ProcessSyncProblems";
 import CacheCoherencySimulator from "./pages/CacheCoherency/cache";
 import CacheHomePage from "./pages/CacheCoherency/cacheHome";
-
+import IPCVisualization from "./pages/InterProcessCom/MessagePass";
+import SharedMemoryVisualization from "./pages/InterProcessCom/SharedMemory";
+import IPCHomePage from "./pages/InterProcessCom/IPCHome";
 
 const App = () => {
   return (
@@ -31,8 +33,8 @@ const App = () => {
         <Route path="/mft" element={<MFT />} />
         <Route path="/memoryhome" element={<MemoryAllocationHome />} />
         <Route path="/" element={<About />} />
-        <Route path="/avoidance" element={<DeadlockAvoidanceSimulator/>} />
-        <Route path="/detection" element={<DeadlockDetectionSimulator/>} />
+        <Route path="/avoidance" element={<DeadlockAvoidanceSimulator />} />
+        <Route path="/detection" element={<DeadlockDetectionSimulator />} />
         <Route path="/deadlockhome" element={<DeadlockHomepage />} />
         <Route path="/process" element={<ProcessSystemCalls />} />
         <Route path="/syscalls" element={<SystemCallsReference />} />
@@ -44,9 +46,11 @@ const App = () => {
         <Route path="/processsync" element={<ProcessSyncProblems />} />
         <Route path="/cache" element={<CacheCoherencySimulator />} />
         <Route path="/cachehome" element={<CacheHomePage />} />
+        <Route path="/IPC" element={<IPCVisualization />} />
+        <Route path="/SM" element={<SharedMemoryVisualization />} />
+        <Route path="/IPCHome" element={<IPCHomePage />} />
       </Routes>
     </Router>
   );
 };
 export default App;
-
