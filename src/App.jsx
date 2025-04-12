@@ -14,6 +14,7 @@ import SystemCallsReference from "./pages/SysCallsGuide";
 import Navbar from "./pages/components/Navbar";
 import FileOrganizationHome from "./pages/FileOrganization/pages/Home";
 import FileOrganizationTechniques from "./pages/FileOrganization/pages/Techniques";
+import DiskMain from "./pages/Disk";
 import FileAllocation from "./pages/FileAllocation/FileAllocation";
 import FileAllocationInfo from "./pages/FileAllocation/FileAllocationInfo";
 import ProcessSyncProblems from "./pages/ProcessSynchronization/ProcessSyncProblems";
@@ -39,8 +40,9 @@ const App = () => {
         <Route path="/syscalls" element={<SystemCallsReference />} />
         <Route path="/fileorganization" element={<FileOrganizationHome />} />
         <Route path="/techniques" element={<FileOrganizationTechniques />} />
-        <Route path="/fileallocation" element={<FileAllocation />} />
-        <Route path="/fileallocationinfo" element={<FileAllocationInfo />} />
+        <Route path="/disk" element={<DiskMain/>} />
+        <Route path="/fileallocation" element={<FileAllocation/>}/>
+        <Route path="/fileallocationinfo" element={<FileAllocationInfo/>}/>
         <Route path="/processsync" element={<ProcessSyncProblems />} />
         <Route path="/cache" element={<CacheCoherencySimulator />} />
         <Route path="/cachehome" element={<CacheHomePage />} />
