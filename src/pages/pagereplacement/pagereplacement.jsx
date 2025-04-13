@@ -215,11 +215,365 @@ const PageReplacementModule = () => {
     return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
   };
 
+  // Second Chance (Clock) Algorithm
+const secondChanceAlgorithm = (pages, frameCount) => {
+  const frames = new Array(frameCount).fill(-1);
+  const referenceBits = new Array(frameCount).fill(false);
+  const states = [];
+  let pageFaults = 0;
+  let pointer = 0;
+
+  pages.forEach((page, index) => {
+    // Check if page already exists in frames
+    const existingPageIndex = frames.indexOf(page);
+    let fault = false;
+    let replaced = -1;
+
+    if (existingPageIndex === -1) {
+      // Page fault
+      pageFaults++;
+      fault = true;
+
+      // Find a page to replace
+      while (true) {
+        if (referenceBits[pointer]) {
+          // Give a second chance
+          referenceBits[pointer] = false;
+          pointer = (pointer + 1) % frameCount;
+        } else {
+          // Replace this page
+          replaced = pointer;
+          frames[pointer] = page;
+          referenceBits[pointer] = true;
+          pointer = (pointer + 1) % frameCount;
+          break;
+        }
+      }
+    } else {
+      // Page hit - set reference bit
+      referenceBits[existingPageIndex] = true;
+    }
+
+    states.push({
+      page,
+      frames: [...frames],
+      fault,
+      replaced,
+      referenceBits: [...referenceBits],
+      pointer
+    });
+  });
+
+  return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
+};
+
+// Enhanced Second Chance Algorithm
+const enhancedSecondChanceAlgorithm = (pages, frameCount) => {
+  const frames = new Array(frameCount).fill(-1);
+  const referenceBits = new Array(frameCount).fill(false);
+  const modifyBits = new Array(frameCount).fill(false); // Simulating modify bits
+  const states = [];
+  let pageFaults = 0;
+  let pointer = 0;
+
+  pages.forEach((page, index) => {
+    // Check if page already exists in frames
+    const existingPageIndex = frames.indexOf(page);
+    let fault = false;
+    let replaced = -1;
+
+    if (existingPageIndex === -1) {
+      // Page fault
+      pageFaults++;
+      fault = true;
+
+      // Find a page to replace
+      let found = false;
+      for (let i = 0; i < frameCount * 2; i++) {
+        const current = pointer % frameCount;
+        
+        // Class 0: (0, 0) - neither referenced nor modified
+        if (!referenceBits[current] && !modifyBits[current]) {
+          replaced = current;
+          found = true;
+          break;
+        }
+        
+        pointer = (pointer + 1) % frameCount;
+      }
+
+      if (!found) {
+        // Second pass: look for (0, 1)
+        for (let i = 0; i < frameCount; i++) {
+          const current = pointer % frameCount;
+          
+          if (!referenceBits[current] && modifyBits[current]) {
+            replaced = current;
+            found = true;
+            break;
+          }
+          
+          pointer = (pointer + 1) % frameCount;
+        }
+      }
+
+      if (!found) {
+        // Third pass: reset reference bits and try again
+        for (let i = 0; i < frameCount; i++) {
+          referenceBits[i] = false;
+        }
+        pointer = 0;
+        replaced = pointer;
+      }
+
+      // Replace the selected page
+      frames[replaced] = page;
+      referenceBits[replaced] = true;
+      // Randomly set modify bit (simulating some pages being modified)
+      modifyBits[replaced] = Math.random() > 0.5;
+      pointer = (pointer + 1) % frameCount;
+    } else {
+      // Page hit - set reference bit
+      referenceBits[existingPageIndex] = true;
+    }
+
+    states.push({
+      page,
+      frames: [...frames],
+      fault,
+      replaced,
+      referenceBits: [...referenceBits],
+      modifyBits: [...modifyBits],
+      pointer
+    });
+  });
+
+  return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
+};
+
+// Most Frequently Used (MFU) Algorithm
+const mfuAlgorithm = (pages, frameCount) => {
+  const frames = new Array(frameCount).fill(-1);
+  const frequency = new Array(frameCount).fill(0);
+  const recency = new Array(frameCount).fill(0); // For tie-breaking
+  const states = [];
+  let pageFaults = 0;
+
+  pages.forEach((page, index) => {
+    // Check if page already exists in frames
+    const existingPageIndex = frames.indexOf(page);
+    let fault = false;
+    let replaced = -1;
+
+    if (existingPageIndex === -1) {
+      // Page fault
+      pageFaults++;
+      fault = true;
+
+      // Find if there's an empty frame
+      const emptyIndex = frames.indexOf(-1);
+      if (emptyIndex !== -1) {
+        frames[emptyIndex] = page;
+        frequency[emptyIndex] = 1;
+        recency[emptyIndex] = index;
+        replaced = emptyIndex;
+      } else {
+        // Find most frequently used page
+        const maxFreq = Math.max(...frequency);
+        const maxFreqIndices = frequency.map((f, i) => f === maxFreq ? i : -1).filter(i => i !== -1);
+        
+        // If there are multiple pages with the same frequency, choose the least recently used
+        const mfuIndices = maxFreqIndices.map(i => ({ index: i, recency: recency[i] }));
+        mfuIndices.sort((a, b) => a.recency - b.recency);
+        
+        replaced = mfuIndices[0].index;
+        frames[replaced] = page;
+        frequency[replaced] = 1;
+        recency[replaced] = index;
+      }
+    } else {
+      // Page hit - update frequency
+      frequency[existingPageIndex]++;
+      recency[existingPageIndex] = index;
+    }
+
+    states.push({
+      page,
+      frames: [...frames],
+      fault,
+      replaced,
+      frequency: [...frequency]
+    });
+  });
+
+  return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
+};
+
+// Page Buffering Algorithm
+const pageBufferingAlgorithm = (pages, frameCount) => {
+  const frames = new Array(frameCount).fill(-1);
+  const buffer = []; // Buffer of recently evicted pages
+  const states = [];
+  let pageFaults = 0;
+
+  pages.forEach((page, index) => {
+    // First check if page is in main frames
+    const existingPageIndex = frames.indexOf(page);
+    let fault = false;
+    let replaced = -1;
+    let restoredFromBuffer = false;
+
+    if (existingPageIndex === -1) {
+      // Check if page is in buffer
+      const bufferIndex = buffer.indexOf(page);
+      if (bufferIndex !== -1) {
+        // Restore from buffer
+        restoredFromBuffer = true;
+        buffer.splice(bufferIndex, 1);
+      } else {
+        // Page fault
+        pageFaults++;
+        fault = true;
+      }
+
+      // Find if there's an empty frame
+      const emptyIndex = frames.indexOf(-1);
+      if (emptyIndex !== -1) {
+        frames[emptyIndex] = page;
+        replaced = emptyIndex;
+      } else {
+        // Replace a page (using FIFO for simplicity)
+        const pageToEvict = frames[0];
+        buffer.push(pageToEvict);
+        if (buffer.length > frameCount) buffer.shift(); // Limit buffer size
+        
+        replaced = 0;
+        for (let i = 0; i < frames.length - 1; i++) {
+          frames[i] = frames[i + 1];
+        }
+        frames[frames.length - 1] = page;
+      }
+    }
+
+    states.push({
+      page,
+      frames: [...frames],
+      fault,
+      replaced,
+      restoredFromBuffer,
+      buffer: [...buffer]
+    });
+  });
+
+  return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
+};
+
+// Not Recently Used (NRU) Algorithm
+const nruAlgorithm = (pages, frameCount) => {
+  const frames = new Array(frameCount).fill(-1);
+  const referenceBits = new Array(frameCount).fill(false);
+  const modifyBits = new Array(frameCount).fill(false); // Simulating modify bits
+  const states = [];
+  let pageFaults = 0;
+  let clockCounter = 0;
+
+  pages.forEach((page, index) => {
+    // Periodically clear reference bits (simulating clock interrupt)
+    if (index % 5 === 0) {
+      for (let i = 0; i < frameCount; i++) {
+        referenceBits[i] = false;
+      }
+    }
+
+    // Check if page already exists in frames
+    const existingPageIndex = frames.indexOf(page);
+    let fault = false;
+    let replaced = -1;
+
+    if (existingPageIndex === -1) {
+      // Page fault
+      pageFaults++;
+      fault = true;
+
+      // Find if there's an empty frame
+      const emptyIndex = frames.indexOf(-1);
+      if (emptyIndex !== -1) {
+        frames[emptyIndex] = page;
+        referenceBits[emptyIndex] = true;
+        // Randomly set modify bit (simulating some pages being modified)
+        modifyBits[emptyIndex] = Math.random() > 0.3;
+        replaced = emptyIndex;
+      } else {
+        // Find page to replace using NRU classes
+        let found = false;
+        
+        // Class 0: (0, 0) - neither referenced nor modified
+        for (let i = 0; i < frameCount && !found; i++) {
+          if (!referenceBits[i] && !modifyBits[i]) {
+            replaced = i;
+            found = true;
+          }
+        }
+        
+        // Class 1: (0, 1) - not referenced but modified
+        if (!found) {
+          for (let i = 0; i < frameCount && !found; i++) {
+            if (!referenceBits[i] && modifyBits[i]) {
+              replaced = i;
+              found = true;
+            }
+          }
+        }
+        
+        // Class 2: (1, 0) - referenced but not modified
+        if (!found) {
+          for (let i = 0; i < frameCount && !found; i++) {
+            if (referenceBits[i] && !modifyBits[i]) {
+              replaced = i;
+              found = true;
+            }
+          }
+        }
+        
+        // Class 3: (1, 1) - referenced and modified
+        if (!found) {
+          for (let i = 0; i < frameCount && !found; i++) {
+            if (referenceBits[i] && modifyBits[i]) {
+              replaced = i;
+              found = true;
+            }
+          }
+        }
+        
+        // Replace the selected page
+        frames[replaced] = page;
+        referenceBits[replaced] = true;
+        // Randomly set modify bit (simulating some pages being modified)
+        modifyBits[replaced] = Math.random() > 0.3;
+      }
+    } else {
+      // Page hit - set reference bit
+      referenceBits[existingPageIndex] = true;
+    }
+
+    states.push({
+      page,
+      frames: [...frames],
+      fault,
+      replaced,
+      referenceBits: [...referenceBits],
+      modifyBits: [...modifyBits]
+    });
+  });
+
+  return { states, pageFaults, hitRatio: (pages.length - pageFaults) / pages.length };
+};
+
   // Run the selected algorithm
   const runAlgorithm = () => {
     const pages = processReferenceString(referenceString);
     let result;
-
+  
     switch (algorithm) {
       case 'fifo':
         result = fifoAlgorithm(pages, frames);
@@ -233,10 +587,25 @@ const PageReplacementModule = () => {
       case 'lfu':
         result = lfuAlgorithm(pages, frames);
         break;
+      case 'second-chance':
+        result = secondChanceAlgorithm(pages, frames);
+        break;
+      case 'enhanced-second-chance':
+        result = enhancedSecondChanceAlgorithm(pages, frames);
+        break;
+      case 'mfu':
+        result = mfuAlgorithm(pages, frames);
+        break;
+      case 'page-buffering':
+        result = pageBufferingAlgorithm(pages, frames);
+        break;
+      case 'nru':
+        result = nruAlgorithm(pages, frames);
+        break;
       default:
         result = fifoAlgorithm(pages, frames);
     }
-
+  
     setResults(result);
     setCurrentStep(0);
     setIsSimulating(true);
@@ -284,7 +653,12 @@ const PageReplacementModule = () => {
     'fifo': 'First-In-First-Out (FIFO)',
     'optimal': 'Optimal',
     'lru': 'Least Recently Used (LRU)',
-    'lfu': 'Least Frequently Used (LFU)'
+    'lfu': 'Least Frequently Used (LFU)',
+    'second-chance': 'Second Chance (Clock)',
+    'enhanced-second-chance': 'Enhanced Second Chance',
+    'mfu': 'Most Frequently Used (MFU)',
+    'page-buffering': 'Page Buffering Algorithm',
+    'nru': 'Not Recently Used (NRU)'
   };
 
   return (
@@ -317,6 +691,11 @@ const PageReplacementModule = () => {
                 <option value="optimal">Optimal</option>
                 <option value="lru">Least Recently Used (LRU)</option>
                 <option value="lfu">Least Frequently Used (LFU)</option>
+                <option value="second-chance">Second Chance (Clock)</option>
+                <option value="enhanced-second-chance">Enhanced Second Chance</option>
+                <option value="mfu">Most Frequently Used (MFU)</option>
+                <option value="page-buffering">Page Buffering Algorithm</option>
+                <option value="nru">Not Recently Used (NRU)</option>
               </select>
             </div>
             
