@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "./index.css";
 import About from "./pages/About";
+import PageReplacementModule from "./pages/pagereplacement/pagereplacement";
+import PageReplacementTheory from "./pages/pagereplacement/pagereplacementtheory";
 import MVT from "./pages/Memory_Management/Mvt";
 import MFT from "./pages/Memory_Management/Mft";
 import MemoryAllocationHome from "./pages/Memory_Management/MemoryHome";
@@ -35,6 +37,9 @@ const App = () => {
         <Route path="/mft" element={<MFT />} />
         <Route path="/memoryhome" element={<MemoryAllocationHome />} />
         <Route path="/" element={<About />} />
+        <Route path="/page" element={<PageReplacementModule />} />
+        <Route path="/theory" element={<PageReplacementTheory />} />
+        <Route path="/page-replacement/simulation" element={<PageReplacementModule />} />
         <Route path="/avoidance" element={<DeadlockAvoidanceSimulator />} />
         <Route path="/detection" element={<DeadlockDetectionSimulator />} />
         <Route path="/deadlockhome" element={<DeadlockHomepage />} />
