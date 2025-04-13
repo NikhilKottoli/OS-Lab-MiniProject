@@ -17,7 +17,7 @@
       "id":3,
       "designer":"Manish",
       "title":"Process Synchronization",
-      "description":"Implementation of process synchronization problems - Producer-Consumer, Readers-Writers, Dining Philosophers.",
+      "description":"Implementation of process synchronization problems: Producer-Consumer, Readers-Writers, Dining-Philosophers and Cigarette-Smokers.",
       "designerRolllNumber":"231CS237"
     },
     {
