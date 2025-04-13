@@ -55,5 +55,12 @@
       "title":"Cache Coherency",
       "description":"Implementation of Interprocess Communicaton.",
       "designerRolllNumber":"231CS237"
+    },
+    {
+      "id":13,
+      "designer":"Mithun",
+      "title":"Memory Management Unit" ,
+      "description":"Simulation of address translation using MMU.",
+      "designerRolllNumber":"231CS234"
     }
   ]
