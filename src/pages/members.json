@@ -5,5 +5,12 @@
       "title": "File and Process System Calls",
       "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
       "designerRolllNumber": "231CS236"
+    },
+    {
+      "id": 6,
+      "designer": "M Dattatreya",
+      "title": "first,next,best and worst fit algo for continuous memory blocks",
+      "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
+      "designerRolllNumber": "231CS231"
     }
   ]
