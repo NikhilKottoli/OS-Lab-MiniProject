@@ -161,8 +161,8 @@ export default function ReaderWriterSimulation() {
   ]);
 
   return (
-    <div className="flex flex-row min-h-screen">
-      <div className="flex flex-col mt-6 mb-6 ml-6 p-6 w-[70%] mx-auto bg-gray-50 rounded-xl shadow-lg">
+    <div className="flex flex-row min-h-screen bg-gray-50">
+      <div className="flex flex-col mt-6 mb-6 ml-6 w-[70%] mx-auto ">
         <h1 className="text-3xl font-bold mb-10 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
           Reader-Writer Problem Simulation
         </h1>
@@ -519,3 +519,6 @@ export default function ReaderWriterSimulation() {
     </div>
   );
 }
+
+
+
