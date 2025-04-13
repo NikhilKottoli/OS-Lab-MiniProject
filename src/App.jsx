@@ -27,6 +27,9 @@ import SharedMemoryVisualization from "./pages/InterProcessCom/SharedMemory";
 import IPCHomePage from "./pages/InterProcessCom/IPCHome";
 import FileSysCall from "./pages/FileSysCall";
 import MemoryManagementVisualizer from "./pages/MemManage";
+import MemoryManagementUnit from "./pages/FileAllocation/MemoryManagementUnit";
+import MMUInfoPage from "./pages/FileAllocation/MemoryManagementInfo";
+
 
 const App = () => {
   return (
@@ -58,6 +61,8 @@ const App = () => {
         <Route path="/IPCHome" element={<IPCHomePage />} />
         <Route path="/filesyscall" element={<FileSysCall />} />
         <Route path="/memmanage" element={<MemoryManagementVisualizer />} />
+        <Route path="/mmu" element={<MemoryManagementUnit />} />
+        <Route path="/mmuinfo" element={<MMUInfoPage />} />
       </Routes>
     </Router>
   );
