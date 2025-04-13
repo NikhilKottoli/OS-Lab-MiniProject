@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ArrowRight, Cpu, Users, BookOpen, Scissors, Coffee } from "lucide-react";
+import { ArrowRight, Cpu, BookOpen, Coffee, Cigarette } from "lucide-react";
 import ReaderWriterSimulation from "./ReaderWriter";
 import ProducerConsumer from "./ProducerConsumer";
 import DiningPhilosophers from "./DiningPhilosopher";
+import CigaretteSmokers from "./CigaretteSmokers";
 
 const ProcessSyncProblems = () => {
   const [activeCard, setActiveCard] = useState(null);
@@ -15,7 +16,8 @@ const ProcessSyncProblems = () => {
       color: "green",
       icon: <Cpu className="w-12 h-12 mb-4" />,
       description: "Producers create data that consumers use. They synchronize to prevent buffer overflow/underflow.",
-      component: <ProducerConsumer />
+      component: <ProducerConsumer />,
+      position: "left"
     },
     {
       id: "reader-writer",
@@ -23,7 +25,8 @@ const ProcessSyncProblems = () => {
       color: "blue",
       icon: <BookOpen className="w-12 h-12 mb-4" />,
       description: "Multiple readers can access data simultaneously, but writers need exclusive access.",
-      component: <ReaderWriterSimulation />
+      component: <ReaderWriterSimulation />,
+      position: "right"
     },
     {
       id: "dining-philosopher",
@@ -31,9 +34,18 @@ const ProcessSyncProblems = () => {
       color: "purple",
       icon: <Coffee className="w-12 h-12 mb-4" />,
       description: "Philosophers must acquire two forks to eat, illustrating resource allocation challenges.",
-      component: <DiningPhilosophers />
+      component: <DiningPhilosophers />,
+      position: "left"
     },
-
+    {
+      id: "cigarette-smokers",
+      title: "Cigarette-Smokers",
+      color: "red",
+      icon: <Cigarette className="w-12 h-12 mb-4" />,
+      description: "Smokers need three ingredients to make a cigarette, but only have one. Illustrates resource allocation and deadlock avoidance.",
+      component: <CigaretteSmokers />,
+      position: "right"
+    }
   ];
 
   const handleCardClick = (id) => {
@@ -49,8 +61,11 @@ const ProcessSyncProblems = () => {
     setActiveComponent(null);
   };
 
+  const leftProblems = problems.filter(p => p.position === "left");
+  const rightProblems = problems.filter(p => p.position === "right");
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden">
       <div className="w-full items-center p-8 animate-fade-in pt-16">
         <h1 className="text-5xl font-bold text-gray-800 text-center mb-2">
           Classical Process Synchronization Problems
@@ -73,36 +88,69 @@ const ProcessSyncProblems = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col my-20 items-center justify-center px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
-            {problems.map((problem) => (
-              <div
-                key={problem.id}
-                onClick={() => handleCardClick(problem.id)}
-                className={`bg-${problem.color}-100 p-7 rounded-xl shadow-md transform transition-all duration-500 cursor-pointer
-                  ${activeCard === problem.id ? `bg-${problem.color}-100 shadow-lg scale-105` : "hover:scale-102 hover:shadow"}
-                  flex flex-col items-center`}
-              >
-                <div className={`text-${problem.color}-500 transition-all duration-300`}>
-                  {problem.icon}
+        <div className="flex flex-col my-10 items-center justify-center px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+            <div className="flex flex-col gap-6">
+              {leftProblems.map((problem) => (
+                <div
+                  key={problem.id}
+                  onClick={() => handleCardClick(problem.id)}
+                  className={`bg-${problem.color}-100 p-7 rounded-xl shadow-md transform transition-all duration-500 cursor-pointer
+                    ${activeCard === problem.id ? `bg-${problem.color}-100 shadow-lg scale-105 ml-6` : "hover:scale-102 hover:shadow"}
+                    flex flex-col items-center`}
+                >
+                  <div className={`text-${problem.color}-500 transition-all duration-300`}>
+                    {problem.icon}
+                  </div>
+                  <h2 className={`text-2xl font-semibold text-${problem.color}-700 mb-2`}>
+                    {problem.title}
+                  </h2>
+                  
+                  <div className={`overflow-hidden transition-all duration-500 ${activeCard === problem.id ? "max-h-48 opacity-100 mt-3" : "max-h-0 opacity-0"}`}>
+                    <p className={`text-${problem.color}-600 text-center`}>
+                      {problem.description}
+                    </p>
+                    <button 
+                      className={`mt-4 px-4 py-2 bg-${problem.color}-500 hover:bg-${problem.color}-600 text-white rounded-md flex items-center gap-2 transition-colors`}
+                      onClick={(e) => handleExplore(problem.id, e)}
+                    >
+                      Explore <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-                <h2 className={`text-2xl font-semibold text-${problem.color}-700 mb-2`}>
-                  {problem.title}
-                </h2>
-                
-                <div className={`overflow-hidden transition-all duration-500 ${activeCard === problem.id ? "max-h-48 opacity-100 mt-3" : "max-h-0 opacity-0"}`}>
-                  <p className={`text-${problem.color}-600 text-center`}>
-                    {problem.description}
-                  </p>
-                  <button 
-                    className={`mt-4 px-4 py-2 bg-${problem.color}-500 hover:bg-${problem.color}-600 text-white rounded-md flex items-center gap-2 transition-colors`}
-                    onClick={(e) => handleExplore(problem.id, e)}
-                  >
-                    Explore <ArrowRight className="w-4 h-4" />
-                  </button>
+              ))}
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              {rightProblems.map((problem) => (
+                <div
+                  key={problem.id}
+                  onClick={() => handleCardClick(problem.id)}
+                  className={`bg-${problem.color}-100 p-7 rounded-xl shadow-md transform transition-all duration-500 cursor-pointer
+                    ${activeCard === problem.id ? `bg-${problem.color}-100 shadow-lg scale-105 mr-6` : "hover:scale-102 hover:shadow"}
+                    flex flex-col items-center`}
+                >
+                  <div className={`text-${problem.color}-500 transition-all duration-300`}>
+                    {problem.icon}
+                  </div>
+                  <h2 className={`text-2xl font-semibold text-${problem.color}-700 mb-2`}>
+                    {problem.title}
+                  </h2>
+                  
+                  <div className={`overflow-hidden transition-all duration-500 ${activeCard === problem.id ? "max-h-48 opacity-100 mt-3" : "max-h-0 opacity-0"}`}>
+                    <p className={`text-${problem.color}-600 text-center`}>
+                      {problem.description}
+                    </p>
+                    <button 
+                      className={`mt-4 px-4 py-2 bg-${problem.color}-500 hover:bg-${problem.color}-600 text-white rounded-md flex items-center gap-2 transition-colors`}
+                      onClick={(e) => handleExplore(problem.id, e)}
+                    >
+                      Explore <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
