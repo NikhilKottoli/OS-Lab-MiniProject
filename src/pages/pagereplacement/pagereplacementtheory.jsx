@@ -87,6 +87,96 @@ const PageReplacementTheory = () => {
       example: 'With reference string "1 2 3 1 2 3 4 5" and 3 frames, LFU would keep pages 1, 2, and 3 (each accessed 3 times) and replace them only when necessary.',
       diagram: 'lfu-diagram',
       color: 'orange'
+    },
+    {
+      id: 'second-chance',
+      name: 'Second Chance (Clock)',
+      shortDesc: 'Gives a second chance to pages with recent use.',
+      description: `The Second Chance or Clock algorithm is an approximation of LRU. Each page has a reference bit. When a page is considered for replacement, its reference bit is checked: if it's 1, the bit is cleared and the page is given a second chance; if it's 0, the page is replaced.`,
+      advantages: [
+        'Efficient implementation compared to LRU',
+        'Performs better than FIFO in most cases',
+        'Simple hardware implementation',
+        'Avoids replacing recently used pages'
+      ],
+      disadvantages: [
+        'May delay replacement of old pages too long',
+        'Can become inefficient with many referenced pages'
+      ],
+      example: 'When page D causes a fault, and page A has reference bit 1, A gets second chance, and the pointer moves until a page with 0 is found.',
+      diagram: 'second-chance-diagram',
+      color: 'teal'
+    },
+    {
+      id: 'enhanced-second-chance',
+      name: 'Enhanced Second Chance',
+      shortDesc: 'Considers both reference and modify bits.',
+      description: `An improved version of the Clock algorithm that uses both reference and modify bits to classify pages. It prioritizes clean and unreferenced pages to reduce I/O overhead.`,
+      advantages: [
+        'Reduces disk writes by avoiding dirty page replacement',
+        'More intelligent than basic Second Chance',
+        'Good performance with moderate complexity'
+      ],
+      disadvantages: [
+        'Requires tracking two bits per page',
+        'More complex than Second Chance'
+      ],
+      example: 'Page with Ref=0 and Mod=0 is replaced first; Ref=0 and Mod=1 is second preference, and so on.',
+      diagram: 'enhanced-second-chance-diagram',
+      color: 'cyan'
+    },
+    {
+      id: 'mfu',
+      name: 'Most Frequently Used (MFU)',
+      shortDesc: 'Replaces the page with the highest usage count.',
+      description: `MFU assumes pages that have been used more in the past are less likely to be needed again. It replaces the page with the highest access count.`,
+      advantages: [
+        'Simple frequency-based approach',
+        'Sometimes useful for specific access patterns'
+      ],
+      disadvantages: [
+        'Contrary to locality principles',
+        'Can lead to suboptimal performance',
+        'Rarely used in practice'
+      ],
+      example: 'If pages A (5), B (3), and C (1) are in memory, MFU replaces A.',
+      diagram: 'mfu-diagram',
+      color: 'brown'
+    },
+    {
+      id: 'page-buffering',
+      name: 'Page Buffering Algorithm (PBA)',
+      shortDesc: 'Uses a buffer of recently evicted pages.',
+      description: `Page Buffering maintains a buffer of recently evicted pages. If a page is needed shortly after eviction, it can be brought back from the buffer, avoiding disk I/O.`,
+      advantages: [
+        'Reduces disk I/O if page is accessed soon after eviction',
+        'Can enhance performance in access bursts'
+      ],
+      disadvantages: [
+        'Extra memory required for the buffer',
+        'Increased complexity in memory management'
+      ],
+      example: 'Page D was recently evicted and added to the buffer. When needed again, it is restored from buffer instead of disk.',
+      diagram: 'page-buffering-diagram',
+      color: 'red'
+    },
+    {
+      id: 'nru',
+      name: 'Not Recently Used (NRU)',
+      shortDesc: 'Classifies pages based on reference and modify bits.',
+      description: `NRU classifies pages into 4 categories using reference and modify bits. It selects pages from the lowest numbered class to replace, balancing recency and write cost.`,
+      advantages: [
+        'Efficient and simple LRU approximation',
+        'Balances read/write cost and recency',
+        'Good for hardware-supported environments'
+      ],
+      disadvantages: [
+        'Requires periodic resetting of reference bits',
+        'Needs access to hardware status bits'
+      ],
+      example: 'Page with Ref=0 and Mod=0 is selected over others with Ref=1 or Mod=1.',
+      diagram: 'nru-diagram',
+      color: 'lime'
     }
   ];
 
@@ -223,6 +313,196 @@ const PageReplacementTheory = () => {
             </div>
           </div>
         );
+        case 'mfu-diagram':
+          return (
+            <div className="flex flex-col items-center">
+              <div className="flex space-x-2 mb-4">
+                <div className="w-20 h-16 border-2 border-rose-500 rounded-lg flex items-center justify-center bg-rose-50 flex-col relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-rose-600 text-xs font-bold">
+                    Most Frequent
+                  </div>
+                  <span className="text-2xl font-bold">A</span>
+                  <span className="text-xs">Count: 5</span>
+                </div>
+                <div className="w-20 h-16 border-2 border-rose-400 rounded-lg flex items-center justify-center bg-rose-50 flex-col">
+                  <span className="text-2xl font-bold">B</span>
+                  <span className="text-xs">Count: 3</span>
+                </div>
+                <div className="w-20 h-16 border-2 border-rose-300 rounded-lg flex items-center justify-center bg-rose-50 flex-col">
+                  <span className="text-2xl font-bold">C</span>
+                  <span className="text-xs">Count: 1</span>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-8 w-8 bg-red-100 border border-red-400 rounded-full flex items-center justify-center">
+                  <span className="text-lg font-bold">D</span>
+                </div>
+                <div className="h-0 w-8 border-t-2 border-red-400"></div>
+                <div className="text-center bg-red-50 p-2 rounded border border-red-300">
+                  <p className="text-sm">Page fault: D replaces A (most frequently used)</p>
+                </div>
+              </div>
+            </div>
+          );
+        case 'page-buffering-diagram':
+          return (
+            <div className="flex flex-col items-center">
+              <div className="flex space-x-2 mb-4">
+                <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-amber-600 text-xs font-bold">
+                    Memory
+                  </div>
+                  <span className="text-2xl font-bold">A</span>
+                </div>
+                <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col">
+                  <span className="text-2xl font-bold">B</span>
+                </div>
+                <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col">
+                  <span className="text-2xl font-bold">C</span>
+                </div>
+              </div>
+              <div className="mb-4">
+                <div className="text-sm text-gray-700">Evicted Pages Buffer:</div>
+                <div className="flex space-x-2 mt-1">
+                  <div className="w-14 h-10 border-2 border-dashed border-amber-400 rounded flex items-center justify-center bg-white">
+                    <span className="text-sm font-medium">D</span>
+                  </div>
+                  <div className="w-14 h-10 border-2 border-dashed border-amber-300 rounded flex items-center justify-center bg-white">
+                    <span className="text-sm font-medium">E</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-8 w-8 bg-red-100 border border-red-400 rounded-full flex items-center justify-center">
+                  <span className="text-lg font-bold">D</span>
+                </div>
+                <div className="h-0 w-8 border-t-2 border-red-400"></div>
+                <div className="text-center bg-red-50 p-2 rounded border border-red-300">
+                  <p className="text-sm">Page fault: D restored from buffer</p>
+                </div>
+              </div>
+            </div>
+          );
+          case 'second-chance-diagram':
+            return (
+              <div className="flex flex-col items-center">
+                <div className="flex space-x-2 mb-4">
+                  <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col relative">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-amber-600 text-xs font-bold">
+                      Page
+                    </div>
+                    <span className="text-2xl font-bold">A</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col">
+                    <span className="text-2xl font-bold">B</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-amber-400 rounded-lg flex items-center justify-center bg-amber-50 flex-col">
+                    <span className="text-2xl font-bold">C</span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="text-sm text-gray-700">Evicted Pages Buffer:</div>
+                  <div className="flex space-x-2 mt-1">
+                    <div className="w-14 h-10 border-2 border-dashed border-amber-400 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">D</span>
+                    </div>
+                    <div className="w-14 h-10 border-2 border-dashed border-amber-300 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">E</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="h-8 w-8 bg-red-100 border border-red-400 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-bold">D</span>
+                  </div>
+                  <div className="h-0 w-8 border-t-2 border-red-400"></div>
+                  <div className="text-center bg-red-50 p-2 rounded border border-red-300">
+                    <p className="text-sm">Page fault: D restored from buffer</p>
+                  </div>
+                </div>
+              </div>
+            );
+          
+          case 'enhanced-second-chance-diagram':
+            return (
+              <div className="flex flex-col items-center">
+                <div className="flex space-x-2 mb-4">
+                  <div className="w-20 h-16 border-2 border-blue-400 rounded-lg flex items-center justify-center bg-blue-50 flex-col relative">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-blue-600 text-xs font-bold">
+                      Page
+                    </div>
+                    <span className="text-2xl font-bold">A</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-blue-400 rounded-lg flex items-center justify-center bg-blue-50 flex-col">
+                    <span className="text-2xl font-bold">B</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-blue-400 rounded-lg flex items-center justify-center bg-blue-50 flex-col">
+                    <span className="text-2xl font-bold">C</span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="text-sm text-gray-700">Evicted Pages Buffer:</div>
+                  <div className="flex space-x-2 mt-1">
+                    <div className="w-14 h-10 border-2 border-dashed border-blue-400 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">D</span>
+                    </div>
+                    <div className="w-14 h-10 border-2 border-dashed border-blue-300 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">E</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="h-8 w-8 bg-blue-100 border border-blue-400 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-bold">D</span>
+                  </div>
+                  <div className="h-0 w-8 border-t-2 border-blue-400"></div>
+                  <div className="text-center bg-blue-50 p-2 rounded border border-blue-300">
+                    <p className="text-sm">Page fault: D restored from buffer</p>
+                  </div>
+                </div>
+              </div>
+            );
+          
+          case 'nru-diagram':
+            return (
+              <div className="flex flex-col items-center">
+                <div className="flex space-x-2 mb-4">
+                  <div className="w-20 h-16 border-2 border-green-400 rounded-lg flex items-center justify-center bg-green-50 flex-col relative">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-green-600 text-xs font-bold">
+                      Page
+                    </div>
+                    <span className="text-2xl font-bold">A</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-green-400 rounded-lg flex items-center justify-center bg-green-50 flex-col">
+                    <span className="text-2xl font-bold">B</span>
+                  </div>
+                  <div className="w-20 h-16 border-2 border-green-400 rounded-lg flex items-center justify-center bg-green-50 flex-col">
+                    <span className="text-2xl font-bold">C</span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="text-sm text-gray-700">Evicted Pages Buffer:</div>
+                  <div className="flex space-x-2 mt-1">
+                    <div className="w-14 h-10 border-2 border-dashed border-green-400 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">D</span>
+                    </div>
+                    <div className="w-14 h-10 border-2 border-dashed border-green-300 rounded flex items-center justify-center bg-white">
+                      <span className="text-sm font-medium">E</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="h-8 w-8 bg-green-100 border border-green-400 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-bold">D</span>
+                  </div>
+                  <div className="h-0 w-8 border-t-2 border-green-400"></div>
+                  <div className="text-center bg-green-50 p-2 rounded border border-green-300">
+                    <p className="text-sm">Page fault: D restored from buffer</p>
+                  </div>
+                </div>
+              </div>
+            );
+          
       default:
         return null;
     }
