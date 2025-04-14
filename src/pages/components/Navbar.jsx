@@ -47,10 +47,11 @@ const Navbar = () => {
 
           {/* Dropdown for Deadlock-related topics */}
           <Dropdown
-            title="Deadlock"
+            title="Synchronization"
             links={[
               { to: "/avoidance", label: "Avoidance" },
               { to: "/detection", label: "Detection" },
+              { to: "/cachehome", label: "Cache Coherency" },
             ]}
           />
 
@@ -59,10 +60,10 @@ const Navbar = () => {
             title="Memory"
             links={[
               { to: "/memoryhome", label: "Memory Management" },
-              { to: "/cachehome", label: "Cache Coherency" },
               { to: "/memmanage", label: "Memory Management System Calls" },
               { to: "/mmu", label: "Memory Management Unit"},
               {to:"/memory_allocation_home", label: "Memory Allocation"},
+              {to:"/theory", label: "Page Replacement"},
             ]}
           />
 
