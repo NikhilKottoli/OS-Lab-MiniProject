@@ -42,15 +42,13 @@ const App = () => {
         <Route path="/mft" element={<MFT />} />
         <Route path="/memoryhome" element={<MemoryAllocationHome />} />
         <Route path="/" element={<About />} />
-        <Route path="/home" element={<MemoryAllocationHomepage />} />
-        
-        {/* Memory Allocation Algorithm Routes */}
+        <Route path="/memory_allocation_home" element={<MemoryAllocationHomepage />} />
+        <Route path="/memory-allocation/buddy-fit" element={<FirstFitDynamic initialStrategy="buddyfit" />} />
         <Route path="/memory-allocation/first-fit" element={<FirstFitDynamic initialStrategy="first" />} />
         <Route path="/memory-allocation/best-fit" element={<FirstFitDynamic initialStrategy="best" />} />
         <Route path="/memory-allocation/worst-fit" element={<FirstFitDynamic initialStrategy="worst" />} />
         <Route path="/memory-allocation/next-fit" element={<FirstFitDynamic initialStrategy="next" />} />
         <Route path="/memory-allocation/quick-fit" element={<FirstFitDynamic initialStrategy="quick" />} />
-        <Route path="/memory-allocation/buddy-fit" element={<FirstFitDynamic initialStrategy="buddyfit" />} />
         <Route path="/page" element={<PageReplacementModule />} />
         <Route path="/theory" element={<PageReplacementTheory />} />
         <Route path="/page-replacement/simulation" element={<PageReplacementModule />} />
