@@ -32,6 +32,7 @@ import MemoryManagementVisualizer from "./pages/MemManage";
 import MemoryManagementUnit from "./pages/FileAllocation/MemoryManagementUnit";
 import MMUInfoPage from "./pages/FileAllocation/MemoryManagementInfo";
 import BIOS from "./pages/BIOS";
+import CPUScheduling from "./pages/CPU-scheduling/scheduling";
 
 const App = () => {
   return (
@@ -73,6 +74,7 @@ const App = () => {
         <Route path="/mmu" element={<MemoryManagementUnit />} />
         <Route path="/mmuinfo" element={<MMUInfoPage />} />
         <Route path="/bios" element={<BIOS />} />
+        <Route path="/cpu-scheduling" element={<CPUScheduling />} />
       </Routes>
     </Router>
   );
