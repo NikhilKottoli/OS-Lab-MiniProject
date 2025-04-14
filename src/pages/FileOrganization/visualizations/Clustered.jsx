@@ -152,6 +152,9 @@ export const Clustered = () => {
   };
 
   const getRecordStyle = (index) => {
+    if (searchResult === index) {
+      return 'bg-green-500 text-white';
+    }
     if (!searchSteps.length) return '';
     
     const currentSearchStep = searchSteps[currentStep];
