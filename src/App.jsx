@@ -31,7 +31,7 @@ import FileSysCall from "./pages/FileSysCall";
 import MemoryManagementVisualizer from "./pages/MemManage";
 import MemoryManagementUnit from "./pages/FileAllocation/MemoryManagementUnit";
 import MMUInfoPage from "./pages/FileAllocation/MemoryManagementInfo";
-
+import BIOS from "./pages/BIOS";
 
 const App = () => {
   return (
@@ -72,6 +72,7 @@ const App = () => {
         <Route path="/memmanage" element={<MemoryManagementVisualizer />} />
         <Route path="/mmu" element={<MemoryManagementUnit />} />
         <Route path="/mmuinfo" element={<MMUInfoPage />} />
+        <Route path="/bios" element={<BIOS />} />
       </Routes>
     </Router>
   );
