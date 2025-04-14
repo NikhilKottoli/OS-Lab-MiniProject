@@ -62,6 +62,7 @@ const Navbar = () => {
               { to: "/cachehome", label: "Cache Coherency" },
               { to: "/memmanage", label: "Memory Management System Calls" },
               { to: "/mmu", label: "Memory Management Unit"},
+              {to:"/memory_allocation_home", label: "Memory Allocation"},
             ]}
           />
 
