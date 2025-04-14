@@ -7,10 +7,60 @@
       "designerRolllNumber": "231CS236"
     },
     {
-      "id": 6,
-      "designer": "M Dattatreya",
-      "title": "first,next,best and worst fit algo for continuous memory blocks",
-      "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
-      "designerRolllNumber": "231CS231"
+      "id":2,
+      "designer":"Hemaakshi",
+      "title":"Deadlock avoidance and detection",
+      "description":"Implementation of deadlock avoidance and detection algorithms in a multi-threaded environment.",
+      "designerRolllNumber":"231CS237"
+    },
+    {
+      "id":3,
+      "designer":"Manish",
+      "title":"Process Synchronization",
+      "description":"Implementation of process synchronization problems: Producer-Consumer, Readers-Writers, Dining-Philosophers and Cigarette-Smokers.",
+      "designerRolllNumber":"231CS237"
+    },
+    {
+      "id":5,
+      "designer":"Padmavati",
+      "title":"Memory Management",
+      "description":"Implementation of MFT and MVT algorithms.",
+      "designerRolllNumber":"231CS238"
+    },
+    {
+      "id":9,
+      "designer":"Mithun",
+      "title":"File Allocation Methods",
+      "description":"Implementation of file allocation-Sequential,Indexed,Linked.",
+      "designerRolllNumber":"231CS234"
+    },
+    {
+      "id":10,
+      "designer":"Mohnish",
+      "title":"File Organization Techniques",
+      "description":"Implementation of file organization-Sequential,Indexed,Hashed.",
+      "designerRolllNumber":"231CS235"
+    },
+    {
+      "id":11,
+      "designer":"Padmavati",
+      "title":"Cache Coherency",
+      "description":"Implementation of cache coherency.",
+      "designerRolllNumber":"231CS238"
+    },
+
+    {
+      "id":12,
+      "designer":"Hemaakshi",
+      "title":"Cache Coherency",
+      "description":"Implementation of Interprocess Communicaton.",
+      "designerRolllNumber":"231CS237"
+    },
+    {
+      "id":13,
+      "designer":"Mithun",
+      "title":"Memory Management Unit" ,
+      "description":"Simulation of address translation using MMU.",
+      "designerRolllNumber":"231CS234"
     }
   ]
