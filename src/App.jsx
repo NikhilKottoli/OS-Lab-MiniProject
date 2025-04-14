@@ -32,6 +32,8 @@ import MemoryManagementVisualizer from "./pages/MemManage";
 import MemoryManagementUnit from "./pages/FileAllocation/MemoryManagementUnit";
 import MMUInfoPage from "./pages/FileAllocation/MemoryManagementInfo";
 import BIOS from "./pages/BIOS";
+import NiceValuePrioritySim from "./pages/NiceValuePrioritySim";
+import CompletelyFairScheduler from "./pages/CompletelyFairScheduler";
 
 const App = () => {
   return (
@@ -73,6 +75,8 @@ const App = () => {
         <Route path="/mmu" element={<MemoryManagementUnit />} />
         <Route path="/mmuinfo" element={<MMUInfoPage />} />
         <Route path="/bios" element={<BIOS />} />
+        <Route path="/nice-cfs" element={<NiceValuePrioritySim />} />
+        <Route path="/cfs" element={<CompletelyFairScheduler />} />
       </Routes>
     </Router>
   );

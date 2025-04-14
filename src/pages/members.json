@@ -27,8 +27,8 @@
     "description": "Implementation of process synchronization problems: Producer-Consumer, Readers-Writers, Dining-Philosophers and Cigarette-Smokers.",
     "authors": [
       {
-        "name": "Manish",
-        "rollNumber": "231CS237"
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
       }
     ]
   },
@@ -133,6 +133,28 @@
       {
         "name":"Nikhil Kottoli",
         "rollNumber":"231CS236"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Completely Fair Scheduler",
+    "description": "Simulation of the Linux Completely Fair Scheduler (CFS) using nice values to control CPU time allocation among processes.",
+    "authors": [
+      {
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Nice Value Priority Simulator",
+    "description": "A visual and interactive simulation demonstrating the concept of process scheduling using nice values, inspired by the Completely Fair Scheduler in Linux.",
+    "authors": [
+      {
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
       }
     ]
   }
