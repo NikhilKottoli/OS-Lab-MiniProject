@@ -490,8 +490,8 @@ const DiningPhilosophers = () => {
   };
 
   return (
-    <div className="min-h-screen  font-sans w-full">
-      <div className="w-full mx-auto ">
+    <div className="min-h-screen  font-sans w-full bg-gray-50">
+      <div className="w-full mx-auto p-6">
         <div className="text-center mb-2">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-blue-700">
             Dining Philosophers Simulation
@@ -859,3 +859,4 @@ const DiningPhilosophers = () => {
 };
 
 export default DiningPhilosophers;
+

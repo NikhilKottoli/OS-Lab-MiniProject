@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, FolderOpen, X, RefreshCw, Edit } from 'lucide-react';
 
-const SystemCallsVisualization = () => {
+const FileSysCall = () => {
   const [activeCall, setActiveCall] = useState(null);
   const [fileStatus, setFileStatus] = useState('closed');
   const [fileContent, setFileContent] = useState('');
@@ -136,4 +136,4 @@ const SystemCallsVisualization = () => {
   );
 };
 
-export default SystemCallsVisualization;
+export default FileSysCall;

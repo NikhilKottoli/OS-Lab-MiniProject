@@ -1,37 +1,161 @@
 [
-    {
-      "id": 1,
-      "designer": "Nikhil Kottoli",
-      "title": "File and Process System Calls",
-      "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
-      "designerRolllNumber": "231CS236"
-    },
-    {
-      "id":2,
-      "designer":"Hemaakshi",
-      "title":"Deadlock avoidance and detection",
-      "description":"Implementation of deadlock avoidance and detection algorithms in a multi-threaded environment.",
-      "designerRolllNumber":"231CS237"
-    },
-    {
-      "id":3,
-      "designer":"Manish",
-      "title":"Process Synchronization",
-      "description":"Implementation of process synchronization problems - Producer-Consumer, Readers-Writers, Dining Philosophers.",
-      "designerRolllNumber":"231CS237"
-    },
-    {
-      "id":9,
-      "designer":"Mithun",
-      "title":"File Allocation Methods",
-      "description":"Implementation of file allocation-Sequential,Indexed,Linked.",
-      "designerRolllNumber":"231CS234"
-    },
-    {
-      "id":10,
-      "designer":"Mohnish",
-      "title":"File Organization Techniques",
-      "description":"Implementation of file organization-Sequential,Indexed,Hashed.",
-      "designerRolllNumber":"231CS235"
-    }
-  ]
+  {
+    "id": 1,
+    "title": "File, Process and Memory System Calls",
+    "description": "Implementation of various system calls for file operations and process management in Unix/Linux environments.",
+    "authors": [
+      {
+        "name": "Nikhil Kottoli",
+        "rollNumber": "231CS236"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Deadlock avoidance and detection",
+    "description": "Implementation of deadlock avoidance and detection algorithms in a multi-threaded environment.",
+    "authors": [
+      {
+        "name": "Hemaakshi",
+        "rollNumber": "231CS237"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Process Synchronization",
+    "description": "Implementation of process synchronization problems: Producer-Consumer, Readers-Writers, Dining-Philosophers and Cigarette-Smokers.",
+    "authors": [
+      {
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Memory Management",
+    "description": "Implementation of MFT and MVT algorithms.",
+    "authors": [
+      {
+        "name": "Padmavati",
+        "rollNumber": "231CS238"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "File Allocation Methods",
+    "description": "Implementation of file allocation-Sequential,Indexed,Linked.",
+    "authors": [
+      {
+        "name": "Mithun",
+        "rollNumber": "231CS234"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "File Organization Techniques",
+    "description": "Implementation of file organization-Sequential,Indexed,Hashed.",
+    "authors": [
+      {
+        "name": "Mohnish",
+        "rollNumber": "231CS235"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Cache Coherency",
+    "description": "Implementation of Interprocess Communicaton.",
+    "authors": [
+      {
+        "name": "Hemaakshi",
+        "rollNumber": "231CS237"
+      },
+      {
+        "name": "Padmavati",
+        "rollNumber": "231CS238"
+      }
+    
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Memory Management Unit",
+    "description": "Simulation of address translation using MMU.",
+    "authors": [
+      {
+        "name": "Mithun",
+        "rollNumber": "231CS234"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Disk Scheduling Algorithms",
+    "description": "Implementation of disk scheduling algorithms: FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK.",
+    "authors": [
+      {
+        "name": "Pal Patel",
+        "rollNumber": "231CS240"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Memory allocation",
+    "description": "Implementation of memory allocation algorithms: First Fit, Best Fit, Worst Fit, Quick Fit, Buddy Fit etc.",
+    "authors": [
+      {
+        "name": "Dattatreya Laxmi Narasimha",
+        "rollNumber": "231CS231"
+      }
+    ]
+  },
+  {
+    "id":16,
+    "title":"Page Replacement Algorithms",
+    "description":"Implementation of page replacement algorithms: FIFO, LRU, LFU, Optimal.",
+    "authors":[
+      {
+        "name":"Parihasa K Reddy",
+        "rollNumber":"231CS239"
+      }
+    ]
+  },
+  {
+    "id":17,
+    "title":"BIOS",
+    "description":"Implementation of BIOS functions.",
+    "authors":[
+      {
+        "name":"Nikhil Kottoli",
+        "rollNumber":"231CS236"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Completely Fair Scheduler",
+    "description": "Simulation of the Linux Completely Fair Scheduler (CFS) using nice values to control CPU time allocation among processes.",
+    "authors": [
+      {
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Nice Value Priority Simulator",
+    "description": "A visual and interactive simulation demonstrating the concept of process scheduling using nice values, inspired by the Completely Fair Scheduler in Linux.",
+    "authors": [
+      {
+        "name": "Manish Agarwal",
+        "rollNumber": "231CS232"
+      }
+    ]
+  }
+]
