@@ -67,15 +67,20 @@ class BPlusTree {
 
   search(key, node = this.root) {
     let i = 0;
-    while (i < node.keys.length && key > node.keys[i]) {
+  
+ 
+    while (i < node.keys.length && key >= node.keys[i]) {
       i++;
     }
+  
     if (node.leaf) {
-      if (node.keys.includes(key)) {
-        return { found: true, node, index: node.keys.indexOf(key) };
+      const index = node.keys.indexOf(key);
+      if (index !== -1) {
+        return { found: true, node, index };
       }
       return { found: false };
     }
+  
     return this.search(key, node.children[i]);
   }
 }
@@ -126,7 +131,9 @@ export const BTreeC = () => {
     setError('');
 
     await new Promise(resolve => setTimeout(resolve, 500));
+
     const result = btree.search(trimmedSearch);
+    console.log(result);
 
     setSearching(false);
     setSearchResult(result.found ? result : null);
