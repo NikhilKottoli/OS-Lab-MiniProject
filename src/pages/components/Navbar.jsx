@@ -16,7 +16,11 @@ const Dropdown = ({ title, links }) => {
         onClick={toggleDropdown}
       >
         <span>{title}</span>
-        <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
+        <span
+          className={`transform transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        >
           &#8595; {/* Down arrow (rotate on open) */}
         </span>
       </button>
@@ -43,7 +47,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-indigo-600">OS Lab Sim</h1>
         <div className="space-x-6 text-gray-700 font-medium flex items-center">
-          <Link to="/" className="hover:text-indigo-600">Home</Link>
+          <Link to="/" className="hover:text-indigo-600">
+            Home
+          </Link>
 
           {/* Dropdown for Deadlock-related topics */}
           <Dropdown
@@ -61,9 +67,9 @@ const Navbar = () => {
             links={[
               { to: "/memoryhome", label: "Memory Management" },
               { to: "/memmanage", label: "Memory Management System Calls" },
-              { to: "/mmu", label: "Memory Management Unit"},
-              {to:"/memory_allocation_home", label: "Memory Allocation"},
-              {to:"/theory", label: "Page Replacement"},
+              { to: "/mmu", label: "Memory Management Unit" },
+              { to: "/memory_allocation_home", label: "Memory Allocation" },
+              { to: "/theory", label: "Page Replacement" },
             ]}
           />
 
@@ -73,7 +79,7 @@ const Navbar = () => {
             links={[
               { to: "/syscalls", label: "Process System Call" },
               { to: "/processsync", label: "Process Sync" },
-              {to: "/IPCHome", label: "Inter Process Communication"},
+              { to: "/IPCHome", label: "Inter Process Communication" },
             ]}
           />
 
@@ -85,6 +91,13 @@ const Navbar = () => {
               { to: "/disk", label: "Disk" },
               { to: "/fileorganization", label: "File Organization" },
               { to: "/fileallocation", label: "File Allocation" },
+            ]}
+          />
+          <Dropdown
+            title="Scheduling"
+            links={[
+              { to: "/nice-cfs", label: "Nice Value Simulator" },
+              { to: "/cfs", label: "Completely Fair Scheduler (CFS)" },
             ]}
           />
         </div>
