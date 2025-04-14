@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, Search, Plus, Info, Trash2, CheckCircle, XCircle } from 'lucide-react';
+import { BookOpen, Search, Plus, Info, Trash2, CheckCircle, XCircle, ArrowRight, Database, List } from 'lucide-react';
 
 export const Sequential = () => {
   const [records, setRecords] = useState([]);
@@ -10,6 +10,7 @@ export const Sequential = () => {
   const [searching, setSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState('');
+  const [showOrganization, setShowOrganization] = useState('sequential');
 
   const MAX_LENGTH = 30;
 
@@ -156,18 +157,23 @@ export const Sequential = () => {
                 </div>
 
                 {searching && (
-                  <p className="text-sm text-gray-500 italic">Traversing records from the beginning...</p>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <ArrowRight className="w-4 h-4 animate-pulse" />
+                    Traversing records sequentially...
+                  </div>
                 )}
 
                 {searchResult !== null && (
                   <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 flex items-center gap-2">
-                    ✅ Record found at position {searchResult + 1}
+                    <CheckCircle className="w-5 h-5" />
+                    Record found at position {searchResult + 1}
                   </div>
                 )}
 
                 {!searching && hasSearched && searchResult === null && (
                   <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center gap-2">
-                    ❌ Record not found
+                    <XCircle className="w-5 h-5" />
+                    Record not found
                   </div>
                 )}
               </div>
@@ -221,21 +227,28 @@ export const Sequential = () => {
                   No records added yet. Add your first record above.
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-2">
-                  {records.map((record, index) => (
-                    <div
-                      key={index}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-500 ${
-                        searchResult === index
-                          ? 'bg-green-500 text-white scale-110 shadow-lg'
-                          : searchingIndex === index
-                          ? 'bg-yellow-100 border border-yellow-300 text-yellow-800 animate-pulse'
-                          : 'bg-indigo-50 text-indigo-700 border border-indigo-100'
-                      }`}
-                    >
-                      {record}
+                <div className="space-y-4">
+                  
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Storage Visualization</h4>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                      {records.map((record, index) => (
+                        <div
+                          key={index}
+                          className={`flex-shrink-0 p-3 rounded border ${
+                            searchResult === index
+                              ? 'bg-green-100 border-green-300'
+                              : searchingIndex === index
+                              ? 'bg-yellow-50 border-yellow-300'
+                              : 'bg-white border-gray-200'
+                          }`}
+                        >
+                          <div className="text-xs text-gray-500 mb-1">Address: {index * 100}</div>
+                          <div className="text-sm font-mono">{record}</div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               )}
             </div>

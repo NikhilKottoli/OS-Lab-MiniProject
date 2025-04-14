@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sequential, Indexed, Hashed } from '../visualizations';
+import { Sequential, Indexed, Hashed,Hierarchical,Clustered,Heap,BTreeC } from '../visualizations';
 
 export const FileOrganizationTechniques = () => {
   const [tab, setTab] = React.useState('sequential');
@@ -11,11 +11,26 @@ export const FileOrganizationTechniques = () => {
         <button onClick={() => setTab('sequential')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'sequential' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Sequential</button>
         <button onClick={() => setTab('indexed')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'indexed' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Indexed</button>
         <button onClick={() => setTab('hashed')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'hashed' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Hashed</button>
+        <button
+          onClick={() => setTab('hierarchical')}
+          className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${
+            tab === 'hierarchical' ? 'bg-purple-600 text-white' : 'bg-white border'
+          }`}
+        >
+          Hierarchical
+        </button>
+        <button onClick={() => setTab('clustered')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'clustered' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Clustered</button>
+        <button onClick={() => setTab('heap')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'heap' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>Heap</button>
+        <button onClick={() => setTab('btree')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition ${tab === 'btree' ? 'bg-purple-600 text-white' : 'bg-white border'}`}>BTree</button>
       </div>
       <div className="p-6 rounded-lg shadow-lg bg-white animate-fade-in">
         {tab === 'sequential' && <Sequential />}
         {tab === 'indexed' && <Indexed />}
         {tab === 'hashed' && <Hashed />}
+        {tab === 'hierarchical' && <Hierarchical />}
+        {tab === 'clustered' && <Clustered />}
+        {tab === 'heap' && <Heap />}
+        {tab === 'btree' && <BTreeC />}
       </div>
     </div>
   );
