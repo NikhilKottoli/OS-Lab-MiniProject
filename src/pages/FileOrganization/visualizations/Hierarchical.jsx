@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Ansi from 'ansi-to-react';
+import Ansi from 'react-ansi'
 import { Folder, FileText, ChevronRight, ChevronDown, Terminal, Trash2 } from 'lucide-react';
 
 const fileStructure = [
