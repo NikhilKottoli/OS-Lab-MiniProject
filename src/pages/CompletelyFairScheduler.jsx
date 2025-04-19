@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, SkipForward, Settings, Info, X } from "lucide-react";
 
@@ -43,20 +42,85 @@ export default function CFSSimulation() {
   const initializeProcesses = () => {
     setCurrentTime(0);
 
-    const newProcesses = Array.from({ length: numProcesses }, (_, i) => ({
-      id: i + 1,
-      name: `Process ${i + 1}`,
-      color: colors[i % colors.length],
-      priority: Math.floor(Math.random() * 10) + 1,
-      remainingTime: Math.floor(Math.random() * 15) + 5,
-      totalTime: Math.floor(Math.random() * 15) + 5,
-      vruntime: 0,
-      state: "ready",
-    }));
+    const newProcesses = Array.from({ length: numProcesses }, (_, i) => {
+      const totalTime = Math.floor(Math.random() * 15) + 5;
+      return {
+        id: i + 1,
+        name: `Process ${i + 1}`,
+        color: colors[i % colors.length],
+        priority: Math.floor(Math.random() * 10) + 1,
+        remainingTime: totalTime, // Set equal to totalTime
+        totalTime: totalTime,
+        vruntime: 0,
+        state: "ready",
+      };
+    });
 
     setProcesses(newProcesses);
     setExecutionHistory([]);
     updateRBTree(newProcesses);
+  };
+
+  // In the simulationStep function:
+  const simulationStep = () => {
+    if (!isRunning) return;
+
+    // Check if all processes are completed
+    const allCompleted = processes.every((p) => p.state === "completed");
+    if (allCompleted) {
+      setIsRunning(false);
+      return;
+    }
+
+    setCurrentTime((prev) => prev + 1);
+
+    setProcesses((prevProcesses) => {
+      const updatedProcesses = [...prevProcesses];
+      const runnableProcesses = updatedProcesses.filter(
+        (p) => p.state === "ready" || p.state === "running"
+      );
+
+      // Reset running processes to ready
+      updatedProcesses.forEach((process) => {
+        if (process.state === "running") {
+          process.state = "ready";
+        }
+      });
+
+      if (runnableProcesses.length > 0) {
+        runnableProcesses.sort((a, b) => a.vruntime - b.vruntime);
+        const nextProcess = runnableProcesses[0];
+        const processIndex = updatedProcesses.findIndex(
+          (p) => p.id === nextProcess.id
+        );
+
+        if (processIndex !== -1) {
+          updatedProcesses[processIndex].state = "running";
+          updatedProcesses[processIndex].vruntime +=
+            1000 / updatedProcesses[processIndex].priority;
+          updatedProcesses[processIndex].remainingTime = Math.max(
+            0,
+            updatedProcesses[processIndex].remainingTime - 1
+          );
+
+          if (updatedProcesses[processIndex].remainingTime <= 0) {
+            updatedProcesses[processIndex].state = "completed";
+          }
+
+          setExecutionHistory((prev) => [
+            ...prev,
+            {
+              time: currentTime,
+              processId: nextProcess.id,
+              color: nextProcess.color,
+            },
+          ]);
+        }
+      }
+
+      updateRBTree(updatedProcesses);
+      return updatedProcesses;
+    });
   };
 
   // Red-Black Tree implementation
@@ -76,13 +140,13 @@ export default function CFSSimulation() {
   const rotateLeft = (tree, node) => {
     const rightChild = node.right;
     node.right = rightChild.left;
-    
+
     if (rightChild.left !== NIL) {
       rightChild.left.parent = node;
     }
-    
+
     rightChild.parent = node.parent;
-    
+
     if (node.parent === null) {
       tree.root = rightChild;
     } else if (node === node.parent.left) {
@@ -90,7 +154,7 @@ export default function CFSSimulation() {
     } else {
       node.parent.right = rightChild;
     }
-    
+
     rightChild.left = node;
     node.parent = rightChild;
   };
@@ -98,13 +162,13 @@ export default function CFSSimulation() {
   const rotateRight = (tree, node) => {
     const leftChild = node.left;
     node.left = leftChild.right;
-    
+
     if (leftChild.right !== NIL) {
       leftChild.right.parent = node;
     }
-    
+
     leftChild.parent = node.parent;
-    
+
     if (node.parent === null) {
       tree.root = leftChild;
     } else if (node === node.parent.right) {
@@ -112,7 +176,7 @@ export default function CFSSimulation() {
     } else {
       node.parent.left = leftChild;
     }
-    
+
     leftChild.right = node;
     node.parent = leftChild;
   };
@@ -122,18 +186,18 @@ export default function CFSSimulation() {
       if (node.parent === node.parent.parent.left) {
         const uncle = node.parent.parent.right;
         if (uncle.isRed) {
-          // Case 1: Uncle is red
+          // Case 1: Recolor
           node.parent.isRed = false;
           uncle.isRed = false;
           node.parent.parent.isRed = true;
           node = node.parent.parent;
         } else {
           if (node === node.parent.right) {
-            // Case 2: Uncle is black and node is right child
+            // Case 2: Rotate left
             node = node.parent;
             rotateLeft(tree, node);
           }
-          // Case 3: Uncle is black and node is left child
+          // Case 3: Rotate right
           node.parent.isRed = false;
           node.parent.parent.isRed = true;
           rotateRight(tree, node.parent.parent);
@@ -157,21 +221,21 @@ export default function CFSSimulation() {
         }
       }
     }
-    tree.root.isRed = false;
+    tree.root.isRed = false; // Root must always be black
   };
 
   const insertNode = (tree, process) => {
     const newNode = createNode(process);
-    
+
     if (tree.root === null || tree.root === NIL) {
       tree.root = newNode;
       newNode.isRed = false; // Root is always black
       return newNode;
     }
-    
+
     let current = tree.root;
     let parent = null;
-    
+
     while (current !== NIL) {
       parent = current;
       if (newNode.vruntime < current.vruntime) {
@@ -180,15 +244,15 @@ export default function CFSSimulation() {
         current = current.right;
       }
     }
-    
+
     newNode.parent = parent;
-    
+
     if (newNode.vruntime < parent.vruntime) {
       parent.left = newNode;
     } else {
       parent.right = newNode;
     }
-    
+
     fixInsert(tree, newNode);
     return newNode;
   };
@@ -222,7 +286,7 @@ export default function CFSSimulation() {
           rotateLeft(tree, node.parent);
           sibling = node.parent.right;
         }
-        
+
         if (!sibling.left.isRed && !sibling.right.isRed) {
           // Case 2: Both sibling's children are black
           sibling.isRed = true;
@@ -251,7 +315,7 @@ export default function CFSSimulation() {
           rotateRight(tree, node.parent);
           sibling = node.parent.left;
         }
-        
+
         if (!sibling.right.isRed && !sibling.left.isRed) {
           sibling.isRed = true;
           node = node.parent;
@@ -277,7 +341,7 @@ export default function CFSSimulation() {
     let y = node;
     let yOriginalColor = y.isRed;
     let x;
-    
+
     if (node.left === NIL) {
       x = node.right;
       transplant(tree, node, node.right);
@@ -288,7 +352,7 @@ export default function CFSSimulation() {
       y = findMin(node.right);
       yOriginalColor = y.isRed;
       x = y.right;
-      
+
       if (y.parent === node) {
         x.parent = y;
       } else {
@@ -296,13 +360,13 @@ export default function CFSSimulation() {
         y.right = node.right;
         y.right.parent = y;
       }
-      
+
       transplant(tree, node, y);
       y.left = node.left;
       y.left.parent = y;
       y.isRed = node.isRed;
     }
-    
+
     if (!yOriginalColor) {
       fixDelete(tree, x);
     }
@@ -324,22 +388,22 @@ export default function CFSSimulation() {
   const updateRBTree = (currentProcesses) => {
     // First build a proper Red-Black Tree structure
     const tree = { root: null };
-    
+
     // Insert processes into the RB Tree
     currentProcesses
       .filter((p) => p.state === "ready" || p.state === "running")
       .forEach((process) => {
         insertNode(tree, process);
       });
-  
+
     // Convert to visualization format
     const nodes = [];
     const links = [];
     let maxDepth = 0;
-  
+
     // Track node indices for linking
     const nodeIndices = new Map();
-  
+
     // Calculate positions using modified BFS for better visualization
     const queue = [];
     if (tree.root) {
@@ -347,11 +411,11 @@ export default function CFSSimulation() {
       tree.root.x = 400; // Start at center
       queue.push(tree.root);
     }
-  
+
     while (queue.length > 0) {
       const node = queue.shift();
       maxDepth = Math.max(maxDepth, node.depth);
-    
+
       const vizNode = {
         id: node.id,
         name: node.name,
@@ -362,16 +426,16 @@ export default function CFSSimulation() {
         isRed: node.isRed,
         index: nodes.length,
       };
-    
+
       nodes.push(vizNode);
       nodeIndices.set(node.id, vizNode.index);
-    
+
       const horizontalSpacing = 200 / (node.depth + 2);
-    
+
       if (node.left !== NIL) {
         node.left.depth = node.depth + 1;
         node.left.x = node.x - horizontalSpacing;
-    
+
         const leftVizNode = {
           id: node.left.id,
           name: node.left.name,
@@ -382,23 +446,23 @@ export default function CFSSimulation() {
           isRed: node.left.isRed,
           index: nodes.length,
         };
-    
+
         nodes.push(leftVizNode);
         nodeIndices.set(node.left.id, leftVizNode.index);
-    
+
         links.push({
           source: vizNode.index,
           target: leftVizNode.index,
           isLeft: true,
         });
-    
+
         queue.push(node.left);
       }
-    
+
       if (node.right !== NIL) {
         node.right.depth = node.depth + 1;
         node.right.x = node.x + horizontalSpacing;
-    
+
         const rightVizNode = {
           id: node.right.id,
           name: node.right.name,
@@ -409,99 +473,99 @@ export default function CFSSimulation() {
           isRed: node.right.isRed,
           index: nodes.length,
         };
-    
+
         nodes.push(rightVizNode);
         nodeIndices.set(node.right.id, rightVizNode.index);
-    
+
         links.push({
           source: vizNode.index,
           target: rightVizNode.index,
           isLeft: false,
         });
-    
+
         queue.push(node.right);
       }
     }
-  
+
     // Center the tree horizontally
     if (nodes.length > 0) {
-      const minX = Math.min(...nodes.map(n => n.x));
-      const maxX = Math.max(...nodes.map(n => n.x));
+      const minX = Math.min(...nodes.map((n) => n.x));
+      const maxX = Math.max(...nodes.map((n) => n.x));
       const treeWidth = maxX - minX;
       const containerWidth = 800;
       const centerOffset = (containerWidth - treeWidth) / 2 - minX;
-      
-      nodes.forEach(node => {
+
+      nodes.forEach((node) => {
         node.x += centerOffset;
       });
     }
-  
+
     setRbTree({ nodes, links });
   };
   useEffect(() => {
     console.log("RB Tree Links:", rbTree.links);
   }, [rbTree]);
   // Main simulation step
-  const simulationStep = () => {
-    if (!isRunning) return;
+  // const simulationStep = () => {
+  //   if (!isRunning) return;
 
-    setCurrentTime((prev) => prev + 1);
+  //   setCurrentTime((prev) => prev + 1);
 
-    setProcesses((prevProcesses) => {
-      // Create copy for manipulation
-      const updatedProcesses = [...prevProcesses];
+  //   setProcesses((prevProcesses) => {
+  //     // Create copy for manipulation
+  //     const updatedProcesses = [...prevProcesses];
 
-      // Get runnable processes
-      const runnableProcesses = updatedProcesses.filter(
-        (p) => p.state === "ready" || p.state === "running"
-      );
+  //     // Get runnable processes
+  //     const runnableProcesses = updatedProcesses.filter(
+  //       (p) => p.state === "ready" || p.state === "running"
+  //     );
 
-      // Update states
-      updatedProcesses.forEach((process) => {
-        if (process.state === "running") {
-          process.state = "ready";
-        }
-      });
+  //     // Update states
+  //     updatedProcesses.forEach((process) => {
+  //       if (process.state === "running") {
+  //         process.state = "ready";
+  //       }
+  //     });
 
-      // If there are runnable processes, run the one with lowest vruntime
-      if (runnableProcesses.length > 0) {
-        // Sort by vruntime to find next process to run
-        runnableProcesses.sort((a, b) => a.vruntime - b.vruntime);
-        
-        const nextProcess = runnableProcesses[0];
-        const processIndex = updatedProcesses.findIndex(
-          (p) => p.id === nextProcess.id
-        );
+  //     // If there are runnable processes, run the one with lowest vruntime
+  //     if (runnableProcesses.length > 0) {
+  //       // Sort by vruntime to find next process to run
+  //       runnableProcesses.sort((a, b) => a.vruntime - b.vruntime);
 
-        if (processIndex !== -1) {
-          updatedProcesses[processIndex].state = "running";
-          updatedProcesses[processIndex].vruntime +=
-            1000 / updatedProcesses[processIndex].priority;
-          updatedProcesses[processIndex].remainingTime -= 1;
+  //       const nextProcess = runnableProcesses[0];
+  //       const processIndex = updatedProcesses.findIndex(
+  //         (p) => p.id === nextProcess.id
+  //       );
 
-          // Check if process is complete
-          if (updatedProcesses[processIndex].remainingTime <= 0) {
-            updatedProcesses[processIndex].state = "completed";
-          }
+  //       if (processIndex !== -1) {
+  //         updatedProcesses[processIndex].state = "running";
+  //         updatedProcesses[processIndex].vruntime +=
+  //           1000 / updatedProcesses[processIndex].priority;
+  //         updatedProcesses[processIndex].remainingTime -= 1;
 
-          // Add to execution history
-          setExecutionHistory((prev) => [
-            ...prev,
-            {
-              time: currentTime,
-              processId: nextProcess.id,
-              color: nextProcess.color,
-            },
-          ]);
-        }
-      }
+  //         // Check if process is complete
+  //         if (updatedProcesses[processIndex].remainingTime <= 0) {
+  //           updatedProcesses[processIndex].state = "completed";
+  //         }
 
-      // Update RB tree
-      updateRBTree(updatedProcesses);
+  //         // Add to execution history
+  //         setExecutionHistory((prev) => [
+  //           ...prev,
+  //           {
+  //             time: currentTime,
+  //             processId: nextProcess.id,
+  //             color: nextProcess.color,
+  //           },
+  //         ]);
+  //       }
+  //     }
 
-      return updatedProcesses;
-    });
-  };
+  //     // Update RB tree
+  //     updateRBTree(updatedProcesses);
+
+  //     return updatedProcesses;
+  //   });
+  // };
 
   // Animation loop
   useEffect(() => {
@@ -704,60 +768,66 @@ export default function CFSSimulation() {
 
           {/* Red-Black Tree Visualization */}
           <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="text-lg font-semibold mb-3">
-          Red-Black Tree (Virtual Runtime)
-        </h2>
-        <div className="relative h-96 border border-gray-200 rounded overflow-auto">
-          {/* Tree connections */}
-          <svg
-            className="absolute inset-0 w-full h-full"
-            style={{ zIndex: 1 }}
-          >
-            {rbTree.links.map((link, index) => {
-              const sourceNode = rbTree.nodes[link.source];
-              const targetNode = rbTree.nodes[link.target];
-              if (!sourceNode || !targetNode) return null;
-              return (
-                <line
-                  key={index}
-                  x1={sourceNode.x}
-                  y1={sourceNode.y}
-                  x2={targetNode.x}
-                  y2={targetNode.y}
-                  stroke={sourceNode.isRed ? "#f87171" : "#000"}
-                  strokeWidth="2"
-                  strokeDasharray={link.isLeft ? "0" : "0"} 
-                />
-              );
-            })}
-          </svg>
+            <h2 className="text-lg font-semibold mb-3">
+              Red-Black Tree (Virtual Runtime)
+            </h2>
+            <div className="relative h-96 border border-gray-200 rounded overflow-auto">
+              {/* Tree connections */}
+              <svg
+                className="absolute inset-0 w-full h-full"
+                style={{ zIndex: 1 }}
+              >
+                {rbTree.links.map((link, index) => {
+                  const sourceNode = rbTree.nodes[link.source];
+                  const targetNode = rbTree.nodes[link.target];
+                  if (!sourceNode || !targetNode) return null;
 
-          {/* Tree nodes */}
-          {rbTree.nodes.map((node, index) => (
-            <div
-              key={index}
-              className={`absolute w-20 h-16 rounded-md flex items-center justify-center transition-all duration-300 ${
-                node.isRed ? "bg-red-400 text-white" : "bg-black text-white"
-              } ${
-                node.id === selectedProcess?.id
-                  ? "ring-4 ring-blue-500"
-                  : ""
-              }`}
-              style={{
-                left: `${node.x - 40}px`,
-                top: `${node.y - 30}px`,
-                zIndex: 2,
-              }}
-            >
-              <div className="text-center">
-                <div className="font-bold text-sm">{node.name}</div>
-                <div className="text-xs">{node.vruntime.toFixed(1)}</div>
-              </div>
+                  return (
+                    <line
+                      key={index}
+                      x1={sourceNode.x}
+                      y1={sourceNode.y}
+                      x2={targetNode.x}
+                      y2={targetNode.y}
+                      stroke={sourceNode.isRed ? "#ef4444" : "#000000"}
+                      strokeWidth="2"
+                    />
+                  );
+                })}
+              </svg>
+
+              {/* Tree nodes */}
+              {rbTree.nodes.map((node, index) => (
+                <div
+                  key={index}
+                  className={`absolute w-20 h-16 rounded-md flex items-center justify-center transition-all duration-300 ${
+                    node.isRed
+                      ? "border-2 border-red-600 bg-red-100"
+                      : "border-2 border-black bg-gray-800 text-white"
+                  } ${
+                    node.id === selectedProcess?.id
+                      ? "ring-4 ring-blue-500"
+                      : ""
+                  }`}
+                  style={{
+                    left: `${node.x - 40}px`,
+                    top: `${node.y - 30}px`,
+                    zIndex: 2,
+                  }}
+                >
+                  <div className="text-center">
+                    <div
+                      className="font-bold text-sm"
+                      style={{ color: node.color }}
+                    >
+                      {node.name}
+                    </div>
+                    <div className="text-xs">{node.vruntime.toFixed(1)}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-          
+          </div>
         </div>
       </div>
 
