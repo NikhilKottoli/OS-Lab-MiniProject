@@ -89,7 +89,7 @@ const Navbar = () => {
             links={[
               { to: "/syscalls", label: "File System Call" },
               { to: "/disk", label: "Disk" },
-              { to: "/fileorganization", label: "File Organization" },
+              { to: "/techniques", label: "File Organization" },
               { to: "/fileallocation", label: "File Allocation" },
             ]}
           />

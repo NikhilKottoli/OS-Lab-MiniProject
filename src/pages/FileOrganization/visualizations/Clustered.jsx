@@ -270,36 +270,7 @@ export const Clustered = () => {
             </div>
 
           
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-purple-100">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Range Search</h3>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  className="flex-1 py-1 px-2 border rounded-lg text-sm"
-                  placeholder="Start value"
-                  value={rangeStart}
-                  onChange={e => setRangeStart(e.target.value)}
-                />
-                <input
-                  type="text"
-                  className="flex-1 py-1 px-2 border rounded-lg text-sm"
-                  placeholder="End value"
-                  value={rangeEnd}
-                  onChange={e => setRangeEnd(e.target.value)}
-                />
-                <button
-                  onClick={rangeSearch}
-                  className="px-3 py-1 text-sm bg-green-600 text-white rounded-lg"
-                >
-                  Search Range
-                </button>
-              </div>
-              {rangeResults.length > 0 && (
-                <div className="mt-4 text-sm text-gray-700">
-                  <strong>Matched Records:</strong> {rangeResults.join(', ')}
-                </div>
-              )}
-            </div>
+            
           </div>
 
 

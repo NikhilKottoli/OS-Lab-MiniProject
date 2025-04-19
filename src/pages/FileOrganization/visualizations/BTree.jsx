@@ -7,80 +7,91 @@ class BPlusNode {
     this.leaf = leaf;
     this.keys = [];
     this.children = [];
-    this.next = null;
+    this.next = null; 
   }
 }
 
+
 class BPlusTree {
-  constructor(t) {
+  
+  
+   
+  constructor(order) {
+    this.order = order;
     this.root = new BPlusNode(true);
-    this.t = t;
   }
 
   insert(key) {
     let root = this.root;
-    if (root.keys.length === 2 * this.t - 1) {
-      let newRoot = new BPlusNode(false);
+  
+    if (root.keys.length === this.order) {
+      const newRoot = new BPlusNode(false);
       newRoot.children.push(root);
-      this.splitChild(newRoot, 0);
+      this._splitChild(newRoot, 0);
       this.root = newRoot;
-      this.insertNonFull(newRoot, key);
-    } else {
-      this.insertNonFull(root, key);
     }
+    this._insertNonFull(this.root, key);
   }
 
-  insertNonFull(node, key) {
-    let i = node.keys.length - 1;
+  _insertNonFull(node, key) {
     if (node.leaf) {
-      node.keys.push(key);
-      node.keys.sort();
+     
+      const idx = node.keys.findIndex(k => k >= key);
+      if (idx === -1) node.keys.push(key);
+      else node.keys.splice(idx, 0, key);
     } else {
-      while (i >= 0 && key < node.keys[i]) i--;
-      i++;
-      if (node.children[i].keys.length === 2 * this.t - 1) {
-        this.splitChild(node, i);
+      
+      let i = node.keys.findIndex(k => key < k);
+      if (i === -1) i = node.keys.length;
+    
+      if (node.children[i].keys.length === this.order) {
+        this._splitChild(node, i);
+     
         if (key > node.keys[i]) i++;
       }
-      this.insertNonFull(node.children[i], key);
+      this._insertNonFull(node.children[i], key);
     }
   }
 
-  splitChild(parent, i) {
-    let t = this.t;
-    let child = parent.children[i];
-    let newNode = new BPlusNode(child.leaf);
-    
+  _splitChild(parent, index) {
+    const order = this.order;
+    const child = parent.children[index];
+    const newNode = new BPlusNode(child.leaf);
+
     if (child.leaf) {
-      newNode.keys = child.keys.splice(t);
+      
+      newNode.keys = child.keys.splice(Math.ceil(order / 2));
+ 
       newNode.next = child.next;
       child.next = newNode;
-      parent.keys.splice(i, 0, newNode.keys[0]);
-      parent.children.splice(i + 1, 0, newNode);
+   
+      parent.keys.splice(index, 0, newNode.keys[0]);
+      parent.children.splice(index + 1, 0, newNode);
     } else {
-      newNode.keys = child.keys.splice(t);
-      newNode.children = child.children.splice(t);
-      parent.keys.splice(i, 0, child.keys.pop());
-      parent.children.splice(i + 1, 0, newNode);
+     
+      const mid = Math.ceil(order / 2) - 1;
+      const upKey = child.keys[mid];
+      
+      newNode.keys = child.keys.splice(mid + 1);
+ 
+      child.keys.splice(mid, 1);
+      
+      newNode.children = child.children.splice(mid + 1);
+      
+      parent.keys.splice(index, 0, upKey);
+      parent.children.splice(index + 1, 0, newNode);
     }
   }
 
   search(key, node = this.root) {
     let i = 0;
-  
- 
-    while (i < node.keys.length && key >= node.keys[i]) {
-      i++;
-    }
-  
+    
+    while (i < node.keys.length && key > node.keys[i]) i++;
+
     if (node.leaf) {
-      const index = node.keys.indexOf(key);
-      if (index !== -1) {
-        return { found: true, node, index };
-      }
-      return { found: false };
+      const idx = node.keys.indexOf(key);
+      return { found: idx !== -1, node, index: idx };
     }
-  
     return this.search(key, node.children[i]);
   }
 }
@@ -133,8 +144,6 @@ export const BTreeC = () => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const result = btree.search(trimmedSearch);
-    console.log(result);
-
     setSearching(false);
     setSearchResult(result.found ? result : null);
   };
@@ -492,7 +501,8 @@ export const BTreeC = () => {
               )}
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-indigo-100 relative">
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-indigo-100 relative"
+            style={{ width: '800px' }}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-semibold text-gray-800">Records ({records.length})</h3>
                 {records.length > 0 && (
@@ -511,7 +521,8 @@ export const BTreeC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  >
                     <h4 className="text-sm font-semibold text-gray-700 mb-2">B+ Tree Storage Structure</h4>
                     <div 
                       ref={treeContainerRef}
