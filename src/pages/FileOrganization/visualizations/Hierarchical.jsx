@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Ansi from 'react-ansi'
+import AnsiToHtml from 'ansi-to-html';
 import { Folder, FileText, ChevronRight, ChevronDown, Terminal, Trash2 } from 'lucide-react';
-
+const ansiConverter = new AnsiToHtml();
 const fileStructure = [
   {
     name: 'Documents',
@@ -377,7 +377,16 @@ export const Hierarchical = () => {
               </div>
               {entry.output && (
                 <div className="text-gray-300 whitespace-pre-wrap mt-1 ml-4">
-                  <Ansi>{entry.output}</Ansi>
+                  <div
+  style={{
+    whiteSpace: 'pre-wrap',
+    fontFamily: 'monospace',
+  }}
+  dangerouslySetInnerHTML={{
+    __html: ansiConverter.toHtml(entry.output || ''),
+  }}
+/>
+
                 </div>
               )}
             </div>
