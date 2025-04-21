@@ -32,7 +32,7 @@ export const FileOrganizationTechniques = () => {
 
   <button onClick={() => setTab('btree')} className={`px-6 py-3 rounded-full text-lg font-semibold shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-xl ${
     tab === 'btree' ? 'bg-purple-600 text-white' : 'bg-white border hover:bg-purple-50'
-  }`}>BTree</button>
+  }`}>B+Tree</button>
 </div>
       <div className="p-6 rounded-lg shadow-lg bg-white animate-fade-in">
         {tab === 'sequential' && <Sequential />}
