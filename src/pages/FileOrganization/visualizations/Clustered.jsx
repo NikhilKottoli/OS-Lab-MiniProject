@@ -178,7 +178,7 @@ export const Clustered = () => {
             Clustered File Organization
           </h1>
           <p className="text-gray-600 mt-2">
-            A demonstration of clustered file organization, searching, range access and simulated disk pages.
+          A visual demonstration of clustered file organization and searching
           </p>
         </div>
 
@@ -315,7 +315,7 @@ export const Clustered = () => {
               </div>
 
               {records.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No records added yet.</div>
+                <div className="text-center py-8 text-gray-500">No records added yet. Add your first record above.</div>
               ) : (
                 <div className="space-y-4">
                   {getPages().map((page, i) => (
