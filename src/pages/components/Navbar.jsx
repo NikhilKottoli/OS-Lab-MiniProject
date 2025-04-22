@@ -97,6 +97,7 @@ const Navbar = () => {
             links={[
               { to: "/nice-cfs", label: "Nice Value Simulator" },
               { to: "/cfs", label: "Completely Fair Scheduler (CFS)" },
+              { to: "/bios", label: "BIOS" },
             ]}
           />
         </div>
