@@ -55,8 +55,7 @@ const Navbar = () => {
           <Dropdown
             title="Synchronization"
             links={[
-              { to: "/avoidance", label: "Avoidance" },
-              { to: "/detection", label: "Detection" },
+              { to: "/deadlockhome", label: "Deadlock" },
               { to: "/cachehome", label: "Cache Coherency" },
             ]}
           />
