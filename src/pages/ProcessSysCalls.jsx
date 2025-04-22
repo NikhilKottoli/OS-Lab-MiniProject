@@ -38,7 +38,7 @@ const ProcessSystemCalls = () => {
   ];
   
   const commands = [
-    'ls -la', 
+    'gcc main.c -o main', 
     'echo "Hello World"', 
     'cat /etc/passwd', 
     'ps aux'
