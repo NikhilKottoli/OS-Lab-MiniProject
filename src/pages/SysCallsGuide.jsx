@@ -71,7 +71,7 @@ export default function SysCallsGuide() {
                         <li><strong>semctl()</strong> - Controls semaphore operations.</li>
                     </ul>
                     <div className="text-center">
-                        <a href="#" className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Visualize</a>
+                        <a href="/IPCHome" className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Visualize</a>
                     </div>
                 </div>
 
@@ -88,9 +88,6 @@ export default function SysCallsGuide() {
                         <li><strong>recv()</strong> - Receives data from a socket.</li>
                         <li><strong>close()</strong> - Closes a socket.</li>
                     </ul>
-                    <div className="text-center">
-                        <a href="#" className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Visualize</a>
-                    </div>
                 </div>
             </div>
         </div>

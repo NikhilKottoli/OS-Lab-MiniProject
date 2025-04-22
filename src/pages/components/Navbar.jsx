@@ -57,6 +57,7 @@ const Navbar = () => {
             links={[
               { to: "/deadlockhome", label: "Deadlock" },
               { to: "/cachehome", label: "Cache Coherency" },
+              {to:"/syscalls", label:"System Calls Reference"},
             ]}
           />
 
@@ -76,7 +77,7 @@ const Navbar = () => {
           <Dropdown
             title="Process"
             links={[
-              { to: "/syscalls", label: "Process System Call" },
+              { to: "/process", label: "Process System Call" },
               { to: "/processsync", label: "Process Sync" },
               { to: "/IPCHome", label: "Inter Process Communication" },
             ]}
@@ -86,7 +87,7 @@ const Navbar = () => {
           <Dropdown
             title="File System"
             links={[
-              { to: "/syscalls", label: "File System Call" },
+              { to: "/filesyscall", label: "File System Call" },
               { to: "/disk", label: "Disk" },
               { to: "/techniques", label: "File Organization Techniques" },
               { to: "/fileallocation", label: "File Allocation" },
