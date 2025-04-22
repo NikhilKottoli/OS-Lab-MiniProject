@@ -70,10 +70,7 @@
     "title": "Cache Coherency",
     "description": "Implementation of Interprocess Communicaton.",
     "authors": [
-      {
-        "name": "Hemaakshi",
-        "rollNumber": "231CS237"
-      },
+      
       {
         "name": "Padmavati",
         "rollNumber": "231CS238"
@@ -155,6 +152,17 @@
       {
         "name": "Manish Agarwal",
         "rollNumber": "231CS232"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Interprocess Communication",
+    "description": "A visual and interactive simulation demonstrating the concept of process scheduling using nice values, inspired by the Completely Fair Scheduler in Linux.",
+    "authors": [
+      {
+        "name": "Hemaakshi",
+        "rollNumber": "231CS237"
       }
     ]
   }
