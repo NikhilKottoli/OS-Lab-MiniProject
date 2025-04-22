@@ -8,11 +8,7 @@ const fileStructure = [
     type: 'folder',
     children: [
       { name: 'Resume.pdf', type: 'file' },
-      {
-        name: 'Project',
-        type: 'folder',
-        children: [{ name: 'report.docx', type: 'file' }],
-      },
+      
     ],
   },
   {
