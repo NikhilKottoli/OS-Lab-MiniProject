@@ -7,6 +7,73 @@ import RequestInput from './components/RequestInput';
 import Statistics from './components/Statistics';
 import RequestGraph from './components/RequestGraph';
 
+// Algorithm descriptions component
+const AlgorithmInfo = ({ algorithm }) => {
+  const descriptions = {
+    fcfs: {
+      title: "First-Come, First-Served (FCFS)",
+      description: "The simplest disk scheduling algorithm that services requests in the exact order they arrive in the queue. While fair, it often results in longer seek times as the disk head moves back and forth across the disk, causing high average seek time and increased rotational latency.",
+      pros: ["Simple to implement", "Fair (no starvation)", "Low CPU overhead"],
+      cons: ["Can cause wild head movements", "Higher average seek time", "No optimization for efficiency"]
+    },
+    sstf: {
+      title: "Shortest Seek Time First (SSTF)",
+      description: "A greedy algorithm that selects the request closest to the current head position. This minimizes seek time for the current request but may cause starvation of some requests and is not optimal in the long run.",
+      pros: ["Better average seek time than FCFS", "Favorable for systems with many requests close together"],
+      cons: ["Possible starvation of distant requests", "Not optimal for overall performance", "Higher CPU overhead than FCFS"]
+    },
+    scan: {
+      title: "SCAN (Elevator Algorithm)",
+      description: "The disk arm moves in one direction (left to right or right to left) servicing requests until it reaches the end, then reverses direction. This prevents starvation and provides more uniform wait times than SSTF.",
+      pros: ["Lower average wait time than FCFS", "No starvation", "Good for high disk loads"],
+      cons: ["Favors tracks at the edges", "Recently visited areas wait the longest", "Some overhead when changing direction"]
+    },
+    cscan: {
+      title: "Circular SCAN (C-SCAN)",
+      description: "A variant of SCAN that moves from one end to the other servicing requests, but when reaching the end, it immediately returns to the beginning without servicing requests on the return trip. This provides more uniform wait times.",
+      pros: ["More uniform wait times than SCAN", "Better for systems with uniformly distributed requests"],
+      cons: ["More head movement than SCAN", "Slightly higher implementation complexity", "May perform worse when requests are clustered"]
+    },
+    look: {
+      title: "LOOK Algorithm",
+      description: "A variation of SCAN that moves in one direction servicing all requests until no more requests exist in that direction, then reverses to service requests in the opposite direction. Unlike SCAN, it doesn't go all the way to the disk boundaries.",
+      pros: ["More efficient than SCAN", "Reduces unnecessary movement to disk edges", "Good balance of simplicity and performance"],
+      cons: ["Slightly more complex than SCAN", "Possible favoritism to middle tracks", "May perform worse under certain request patterns"]
+    },
+    clook: {
+      title: "C-LOOK Algorithm",
+      description: "A variation of C-SCAN that only goes as far as the last request in each direction, then immediately returns to service requests at the other end. This eliminates unnecessary head movements to the disk boundaries.",
+      pros: ["More efficient than C-SCAN", "Good average seek time", "Uniform wait times without wasted movements"],
+      cons: ["More complex implementation", "May perform worse under certain workloads", "Higher CPU overhead"]
+    }
+  };
+
+  const info = descriptions[algorithm];
+
+  return (
+    <div className="bg-gray-50 p-4 rounded-lg shadow-inner mt-4">
+      <h3 className="text-xl font-semibold text-indigo-700">{info.title}</h3>
+      <p className="mt-2 text-gray-700">{info.description}</p>
+      <div className="mt-3">
+        <h4 className="font-medium text-green-700">Advantages:</h4>
+        <ul className="list-disc list-inside pl-2 text-gray-700">
+          {info.pros.map((pro, index) => (
+            <li key={`pro-${index}`}>{pro}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-2">
+        <h4 className="font-medium text-red-700">Disadvantages:</h4>
+        <ul className="list-disc list-inside pl-2 text-gray-700">
+          {info.cons.map((con, index) => (
+            <li key={`con-${index}`}>{con}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const MAX_POSITION = 199;
 
 function DiskMain() {
@@ -82,6 +149,8 @@ function DiskMain() {
               algorithm={algorithm}
               onAlgorithmChange={setAlgorithm}
             />
+
+            <AlgorithmInfo algorithm={algorithm} />
 
             <div className="space-y-4">
               <RequestInput
