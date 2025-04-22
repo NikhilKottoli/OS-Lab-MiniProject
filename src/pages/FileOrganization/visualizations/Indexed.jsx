@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ListOrdered, Plus, Search, Trash2, Info } from 'lucide-react';
+import { ListOrdered, Plus, Search, Trash2, Info,CheckCircle,XCircle, } from 'lucide-react';
 
 export const Indexed = () => {
   const [records, setRecords] = useState([]);
@@ -125,9 +125,34 @@ export const Indexed = () => {
                     An index is maintained to map keys to storage locations, improving access speed.
                     Each record is assigned an index value based on its position in the records array.
                   </p>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-lg font-semibold text-green-700 flex items-center gap-2 mb-2">
+                        <CheckCircle className="w-5 h-5" />
+                        Advantages
+                      </h4>
+                      <ul className="list-disc list-inside text-gray-600 space-y-1 ml-2">
+                        <li>Faster access compared to sequential files</li>
+                        <li>Suitable for databases with large records</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-red-700 flex items-center gap-2 mb-2">
+                        <XCircle className="w-5 h-5" />
+                        Disadvantages
+                      </h4>
+                      <ul className="list-disc list-inside text-gray-600 space-y-1 ml-2">
+                        <li>Extra storage is needed for indexes</li>
+                        <li>Overhead in maintaining the index</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
+              
             </div>
+           
+
 
             <div className="bg-white rounded-xl shadow-lg p-6 border border-blue-100">
               <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">

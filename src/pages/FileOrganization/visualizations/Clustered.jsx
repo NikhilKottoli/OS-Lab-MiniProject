@@ -292,7 +292,7 @@ export const Clustered = () => {
                 <button
                   onClick={addRecord}
                   disabled={!input.trim()}
-                  className="px-6 py-2 bg-indigo-600 text-white rounded-lg"
+                  className="px-6 py-2 bg-purple-400 text-white rounded-lg hover:bg-purple-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2 shadow"
                 >
                   <Plus className="w-4 h-4" />
                   Add
